@@ -261,42 +261,73 @@
     <!-- Backdrop -->
     <div onclick="closeConfirmModal()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
     
-    <!-- Modal Content -->
-    <div class="relative bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl animate-pop z-10 border border-cream-200">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-11 h-11 rounded-2xl bg-sage-100 text-sage-700 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    <!-- Modal Content: Tampilan Struk Digital Modern -->
+    <div class="relative bg-white w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl animate-pop z-10 border border-cream-200 flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between gap-3 mb-4 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-sage-100 text-sage-700 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="font-display font-bold text-lg text-slate-800 leading-tight">Pratinjau Struk Pesanan</h4>
+            <p class="text-xs text-slate-500">Siap dikirim rapi ke WhatsApp penjual</p>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          onclick="closeConfirmModal()" 
+          aria-label="Tutup pratinjau"
+          class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
-        </div>
-        <div>
-          <h4 class="font-display font-bold text-lg text-slate-800">Konfirmasi Pesanan</h4>
-          <p class="text-xs text-slate-500">Periksa kembali sebelum diarahkan ke WhatsApp</p>
-        </div>
+        </button>
       </div>
 
-      <!-- Preview Teks Pesan WhatsApp -->
-      <div class="bg-cream-50 border border-cream-200 rounded-2xl p-3.5 mb-5 max-h-60 overflow-y-auto custom-scrollbar">
-        <pre id="wa-message-preview" class="text-xs text-slate-700 whitespace-pre-wrap font-sans leading-relaxed"></pre>
+      <!-- Kertas Struk Digital -->
+      <div class="relative bg-cream-50 border-2 border-dashed border-sage-200 rounded-2xl p-4 sm:p-5 mb-4 overflow-y-auto custom-scrollbar shadow-inner">
+        <div class="flex items-center justify-between text-[10px] font-semibold uppercase tracking-widest text-sage-600 mb-2.5 pb-2 border-b border-dashed border-cream-200">
+          <span>Nota Digital WhatsApp</span>
+          <span class="bg-sage-100 text-sage-700 px-2 py-0.5 rounded-full">Format Terverifikasi</span>
+        </div>
+        <pre id="wa-message-preview" class="text-[12.5px] sm:text-[13px] text-slate-800 whitespace-pre-wrap font-mono leading-relaxed tracking-tight select-all"></pre>
       </div>
 
-      <div class="flex items-center gap-3">
+      <!-- Tombol Salin Struk (Praktis) -->
+      <div class="mb-3 shrink-0">
+        <button 
+          type="button"
+          onclick="copyReceiptText()" 
+          class="w-full py-2.5 px-4 rounded-xl bg-cream-100 hover:bg-cream-200/80 text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition active:scale-[0.99] border border-cream-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          <span>Salin Teks Struk</span>
+        </button>
+      </div>
+
+      <!-- Tombol Aksi Utama -->
+      <div class="flex items-center gap-2.5 shrink-0">
         <button 
           type="button"
           onclick="closeConfirmModal()" 
-          class="flex-1 py-3 px-4 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition"
+          class="py-3 px-4 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs sm:text-sm hover:bg-slate-50 transition"
         >
-          Ubah Data
+          Edit Data
         </button>
         <button 
           type="button"
           onclick="proceedToWhatsApp()" 
-          class="flex-1 py-3 px-4 rounded-xl bg-sage-600 hover:bg-sage-700 text-white font-semibold text-sm shadow-soft flex items-center justify-center gap-2 transition active:scale-95"
+          class="flex-1 py-3 px-4 rounded-xl bg-sage-600 hover:bg-sage-700 text-white font-display font-bold text-xs sm:text-sm shadow-soft flex items-center justify-center gap-2 transition active:scale-95"
         >
-          <span>Lanjut ke WA</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
           </svg>
+          <span>Kirim Pesanan ke WhatsApp</span>
         </button>
       </div>
     </div>
@@ -1009,9 +1040,19 @@
 
     /**
      * =========================================================================
-     * 7. VALIDASI & PENYUSUNAN PESAN WHATSAPP
+     * 7. VALIDASI & PENYUSUNAN STRUK PESAN WHATSAPP PROFESIONAL
      * =========================================================================
      */
+    function formatIndonesianOrderTimestamp(date = new Date()) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      return `${day} ${month} ${year}, ${hours}:${minutes} WIB`;
+    }
+
     function validateOrder() {
       const { items } = getCartSummary();
       let isValid = true;
@@ -1045,40 +1086,47 @@
     }
 
     function buildWhatsAppMessage() {
-      const { items, totalPrice } = getCartSummary();
+      const { items, totalItems, totalPrice } = getCartSummary();
       const nama = state.customer.name.trim();
       const alamat = state.customer.address.trim();
-      const catatan = state.customer.notes.trim() || "-";
+      const catatanRaw = state.customer.notes.trim();
+      const catatanFormatted = catatanRaw ? catatanRaw : "Tidak ada catatan";
+      const waktuOrder = formatIndonesianOrderTimestamp();
 
-      let detailLines = [];
-      let lineNumber = 1;
+      const thickLine = "━━━━━━━━━━━━━━━━━━━━";
+      const dashedLine = "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄";
 
-      items.forEach(item => {
-        detailLines.push(`${lineNumber++}. ${item.displayName}`);
-        detailLines.push(`${lineNumber++}. Harga: Rp${formatNumberID(item.price)}`);
-        detailLines.push(`${lineNumber++}. Jumlah: ${item.quantity}`);
-        detailLines.push(`${lineNumber++}. Subtotal: Rp${formatNumberID(item.subtotal)}`);
+      const itemBlocks = items.map((item, idx) => {
+        const variantInfo = item.variant ? ` | Varian: ${item.variant}` : "";
+        return [
+          `*${idx + 1}. ${item.productName}*`,
+          `   Paket: ${item.packageLabel}${variantInfo}`,
+          `   ${item.quantity} x Rp${formatNumberID(item.price)} = *Rp${formatNumberID(item.subtotal)}*`
+        ].join("\n");
       });
 
-      const message = [
-        "Halo, saya ingin memesan produk.",
+      const receiptLines = [
+        "*YUKKK APRESIASI DIRI*",
+        "_Self Reward Penting • Nota Pemesanan_",
+        thickLine,
+        `Waktu: ${waktuOrder}`,
+        `*Pemesan:* ${nama}`,
+        `*Alamat:* ${alamat}`,
+        thickLine,
+        "*RINCIAN PESANAN*",
         "",
-        "DATA PEMESAN",
-        `Nama: ${nama}`,
-        `Alamat: ${alamat}`,
-        "",
-        "DETAIL PESANAN",
-        ...detailLines,
-        "",
-        "CATATAN",
-        catatan,
-        "",
-        `TOTAL PESANAN: Rp${formatNumberID(totalPrice)}`,
-        "",
-        "Mohon konfirmasi pesanan saya. Terima kasih!"
-      ].join("\n");
+        itemBlocks.join("\n\n"),
+        dashedLine,
+        `Total Item: ${totalItems} item`,
+        `*TOTAL BAYAR: Rp${formatNumberID(totalPrice)}*`,
+        thickLine,
+        "*Catatan:*",
+        `_${catatanFormatted}_`,
+        thickLine,
+        "Mohon konfirmasi ketersediaan & total pesanan saya ya kak. Terima kasih!"
+      ];
 
-      return message;
+      return receiptLines.join("\n");
     }
 
     function handleOrderSubmit(event) {
@@ -1094,6 +1142,23 @@
 
     function closeConfirmModal() {
       document.getElementById('confirm-wa-modal').classList.add('hidden');
+    }
+
+    function copyReceiptText() {
+      const message = buildWhatsAppMessage();
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = message;
+      tempTextArea.style.position = 'fixed';
+      tempTextArea.style.opacity = '0';
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Struk pesanan berhasil disalin!');
+      } catch (err) {
+        showToast('Gagal menyalin struk.', 'error');
+      }
+      document.body.removeChild(tempTextArea);
     }
 
     function proceedToWhatsApp() {
