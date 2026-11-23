@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yukkk apresiasi diri — Katalog & Pemesanan</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Konfigurasi Warna & Font Kustom Tailwind -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            cream: {
+              50: '#FDFBF7',
+              100: '#F7F3EB',
+              200: '#EFE8DA',
+            },
+            sage: {
+              50: '#F2F7F4',
+              100: '#E1EDE6',
+              200: '#C4DDD0',
+              500: '#4A8B6F',
+              600: '#39735A',
+              700: '#2D5C48',
+            }
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(45, 92, 72, 0.06)',
+            'soft-lg': '0 10px 30px -4px rgba(45, 92, 72, 0.1)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Smooth scrolling & custom scrollbar */
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: #FDFBF7;
+      color: #1E293B;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Custom Scrollbar untuk area keranjang */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #F7F3EB;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #C4DDD0;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #4A8B6F;
+    }
+
+    /* Animasi mikro untuk interaksi tombol dan modal */
+    @keyframes popIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .animate-slide-up {
+      animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-sage-200 selection:text-sage-700">
+
+  <!-- ==================== HEADER / NAVBAR ==================== -->
+  <header class="sticky top-0 z-30 bg-cream-50/90 backdrop-blur-md border-b border-cream-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <!-- Identitas Brand -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-sage-600 text-white flex items-center justify-center shadow-soft shrink-0">
+          <!-- Ikon Daun / Self Reward -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <div>
+          <h1 id="header-store-name" class="font-display font-bold text-lg sm:text-xl text-slate-800 tracking-tight leading-tight">
+            yukkk apresiasi diri
+          </h1>
+          <p id="header-store-tagline" class="text-xs sm:text-sm text-sage-600 font-medium">
+            self reward penting
+          </p>
+        </div>
+      </div>
+
+      <!-- Tombol Keranjang Desktop & Mobile -->
+      <button 
+        onclick="openMobileCart()" 
+        class="lg:hidden relative p-2.5 rounded-xl bg-white border border-cream-200 text-slate-700 hover:bg-sage-50 hover:border-sage-200 transition active:scale-95 shadow-soft"
+        aria-label="Buka Keranjang"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <span id="header-cart-badge" class="hidden absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 rounded-full bg-sage-600 text-white text-[11px] font-bold flex items-center justify-center shadow-sm">
+          0
+        </span>
+      </button>
+
+      <!-- Info Singkat di Desktop -->
+      <div class="hidden lg:flex items-center gap-2 text-sm text-slate-600 bg-cream-100/80 px-4 py-2 rounded-full border border-cream-200">
+        <span class="w-2 h-2 rounded-full bg-sage-500 animate-pulse"></span>
+        <span>Pesan mudah & langsung terhubung ke WhatsApp</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO / SAMBUTAN SINGKAT ==================== -->
+  <section class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-4">
+    <div class="bg-gradient-to-br from-sage-50 via-cream-100 to-white border border-sage-100 rounded-3xl p-6 sm:p-8 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="max-w-2xl">
+        <span class="inline-block px-3 py-1 rounded-full bg-sage-100 text-sage-700 text-xs font-semibold tracking-wide uppercase mb-2.5">
+          Katalog Pilihan Hari Ini
+        </span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-slate-800 tracking-tight mb-2">
+          Saatnya beri hadiah kecil untuk dirimu sendiri ✨
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+          Pilih produk favoritmu di bawah ini, atur jumlah pesanan, lalu kirim detail pesananmu langsung ke WhatsApp kami dalam sekali klik.
+        </p>
+      </div>
+      <div class="hidden md:flex flex-col items-end shrink-0 text-right">
+        <span class="text-xs text-slate-400 font-medium">Layanan Pemesanan</span>
+        <span class="text-sm font-semibold text-sage-700 mt-0.5">Cepat & Tanpa Ribet</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== KONTEN UTAMA (KATALOG + KERANJANG) ==================== -->
+  <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 pb-28 lg:pb-12 flex-1">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- KOLOM KIRI: DAFTAR KATALOG PRODUK (7 Kolom di Desktop) -->
+      <div class="lg:col-span-7 xl:col-span-8">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-display font-bold text-lg sm:text-xl text-slate-800">
+            Daftar Produk
+          </h3>
+          <span id="product-count-label" class="text-xs sm:text-sm text-slate-500 font-medium">
+            Menampilkan 3 produk
+          </span>
+        </div>
+
+        <!-- Grid Kartu Produk -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+          <!-- Kartu produk akan dirender otomatis melalui JavaScript -->
+        </div>
+      </div>
+
+      <!-- KOLOM KANAN: PANEL RINGKASAN PESANAN & CHECKOUT STICKY (Desktop) -->
+      <aside class="hidden lg:block lg:col-span-5 xl:col-span-4 sticky top-24">
+        <div id="desktop-checkout-container" class="bg-white rounded-3xl border border-cream-200 shadow-soft-lg overflow-hidden">
+          <!-- Isi panel keranjang & form dirender melalui JavaScript agar sinkron dengan mobile -->
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-cream-200 bg-cream-100/50 py-6 mt-auto mb-16 lg:mb-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm text-slate-500">
+      <p class="font-medium text-slate-700">© <span id="footer-year"></span> <span id="footer-store-name">yukkk apresiasi diri</span>. All rights reserved.</p>
+      <p>Dibuat dengan penuh kehangatan — <span class="text-sage-600 font-medium">self reward penting</span></p>
+    </div>
+  </footer>
+
+  <!-- ==================== FLOATING BOTTOM BAR (KHUSUS MOBILE) ==================== -->
+  <div id="mobile-floating-bar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 p-3 bg-gradient-to-t from-cream-50 via-cream-50/95 to-transparent pointer-events-none">
+    <button 
+      onclick="openMobileCart()" 
+      class="pointer-events-auto w-full max-w-lg mx-auto bg-sage-600 hover:bg-sage-700 text-white rounded-2xl p-3.5 px-5 shadow-soft-lg flex items-center justify-between transition active:scale-[0.98]"
+    >
+      <div class="flex items-center gap-3">
+        <div class="relative bg-white/20 p-2 rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span id="floating-cart-badge" class="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-amber-400 text-slate-900 text-[11px] font-bold flex items-center justify-center">
+            0
+          </span>
+        </div>
+        <div class="text-left">
+          <p class="text-xs text-sage-100 font-medium">Ringkasan Pesanan</p>
+          <p id="floating-cart-total" class="font-display font-bold text-base leading-tight">Rp0</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 font-semibold text-sm bg-white/15 px-3.5 py-2 rounded-xl">
+        <span>Lihat & Pesan</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+    </button>
+  </div>
+
+  <!-- ==================== DRAWER / MODAL KERANJANG MOBILE ==================== -->
+  <div id="mobile-cart-modal" class="fixed inset-0 z-50 hidden lg:hidden">
+    <!-- Backdrop -->
+    <div onclick="closeMobileCart()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"></div>
+    
+    <!-- Bottom Sheet Drawer -->
+    <div class="fixed inset-x-0 bottom-0 max-h-[92vh] bg-white rounded-t-3xl shadow-2xl flex flex-col animate-slide-up overflow-hidden">
+      <!-- Handle bar -->
+      <div class="pt-3 pb-1 flex justify-center shrink-0" onclick="closeMobileCart()">
+        <div class="w-12 h-1.5 rounded-full bg-slate-200"></div>
+      </div>
+      
+      <!-- Container Konten Keranjang Mobile -->
+      <div id="mobile-checkout-container" class="flex-1 overflow-y-auto custom-scrollbar">
+        <!-- Diisi otomatis oleh JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DETAIL PRODUK (QUICK PREVIEW) ==================== -->
+  <div id="product-detail-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div onclick="closeProductModal()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
+    
+    <!-- Modal Content -->
+    <div id="product-detail-content" class="relative bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-pop z-10 border border-cream-200">
+      <!-- Diisi otomatis oleh JavaScript -->
+    </div>
+  </div>
+
+  <!-- ==================== MODAL KONFIRMASI SEBELUM KE WHATSAPP ==================== -->
+  <div id="confirm-wa-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div onclick="closeConfirmModal()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl animate-pop z-10 border border-cream-200">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-11 h-11 rounded-2xl bg-sage-100 text-sage-700 flex items-center justify-center shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-display font-bold text-lg text-slate-800">Konfirmasi Pesanan</h4>
+          <p class="text-xs text-slate-500">Periksa kembali sebelum diarahkan ke WhatsApp</p>
+        </div>
+      </div>
+
+      <!-- Preview Teks Pesan WhatsApp -->
+      <div class="bg-cream-50 border border-cream-200 rounded-2xl p-3.5 mb-5 max-h-60 overflow-y-auto custom-scrollbar">
+        <pre id="wa-message-preview" class="text-xs text-slate-700 whitespace-pre-wrap font-sans leading-relaxed"></pre>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button 
+          type="button"
+          onclick="closeConfirmModal()" 
+          class="flex-1 py-3 px-4 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition"
+        >
+          Ubah Data
+        </button>
+        <button 
+          type="button"
+          onclick="proceedToWhatsApp()" 
+          class="flex-1 py-3 px-4 rounded-xl bg-sage-600 hover:bg-sage-700 text-white font-semibold text-sm shadow-soft flex items-center justify-center gap-2 transition active:scale-95"
+        >
+          <span>Lanjut ke WA</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION ==================== -->
+  <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+
+  <!-- =========================================================================
+       BAGIAN JAVASCRIPT: DATA PRODUK & LOGIKA APLIKASI
+       ========================================================================= -->
+  <script>
+    /**
+     * =========================================================================
+     * 1. KONFIGURASI TOKO & DAFTAR PRODUK (MUDAH DIEDIT)
+     * =========================================================================
+     * Panduan Mengedit:
+     * - Ubah `whatsappNumber` menggunakan format internasional tanpa tanda '+' (contoh: 6285839227740).
+     * - Setiap produk memiliki array `packages` untuk opsi harga satuan/paket.
+     * - Tambahkan array `variants` (opsional) jika produk memiliki pilihan rasa (contoh: Donat Lembut).
+     * - `available` diisi `true` jika stok tersedia, atau `false` jika stok habis.
+     */
+    const STORE_CONFIG = {
+      name: "yukkk apresiasi diri",
+      tagline: "self reward penting",
+      whatsappNumber: "6285839227740"
+    };
+
+    const PRODUCTS = [
+      {
+        id: "donat-lembut",
+        name: "Donat Lembut (Gula & Isi Cokelat)",
+        description: "Donat empuk dan enak dengan pilihan taburan gula halus klasik atau isian cokelat lumer di dalam. Bebas pilih rasa atau mix.",
+        driveId: "1SXN5omBo2fqmDstRAXpCu4S2XtwYzX71",
+        image: "https://drive.google.com/thumbnail?id=1SXN5omBo2fqmDstRAXpCu4S2XtwYzX71&sz=w1000",
+        fallbackImage: "https://lh3.googleusercontent.com/d/1SXN5omBo2fqmDstRAXpCu4S2XtwYzX71",
+        available: true,
+        packages: [
+          {
+            id: "satuan",
+            label: "Satuan (1 pcs)",
+            price: 3500
+          },
+          {
+            id: "paket-hemat",
+            label: "Paket Hemat (3 pcs - Bebas Mix Gula / Cokelat)",
+            price: 10000
+          }
+        ],
+        variants: ["Gula", "Cokelat", "Mix"]
+      },
+      {
+        id: "risol-mayo",
+        name: "Risol Mayo Enak",
+        description: "Risol kulit renyah dengan isian mayones creamy, smoked beef, dan telur yang gurih dan melimpah.",
+        driveId: "17RCi2kfpJCRcLTCtDuxGCkEciaKZFiBG",
+        image: "https://drive.google.com/thumbnail?id=17RCi2kfpJCRcLTCtDuxGCkEciaKZFiBG&sz=w1000",
+        fallbackImage: "https://lh3.googleusercontent.com/d/17RCi2kfpJCRcLTCtDuxGCkEciaKZFiBG",
+        available: true,
+        packages: [
+          {
+            id: "satuan",
+            label: "Satuan (1 pcs)",
+            price: 5000
+          },
+          {
+            id: "paket-berdua",
+            label: "Paket Berdua (2 pcs)",
+            price: 9000
+          },
+          {
+            id: "paket-bertiga",
+            label: "Paket Bertiga (3 pcs)",
+            price: 14000
+          }
+        ]
+      },
+      {
+        id: "pukis-maknyos",
+        name: "Pukis Maknyos Enak",
+        description: "Cookies renyah manis dengan aneka topping dan varian rasa: meses, keju, cokelat, tiramisu, dan lainnya.",
+        driveId: "1ITFxp6ZwHerqJ1xiDUlccjMe40SJt8Dl",
+        image: "https://drive.google.com/thumbnail?id=1ITFxp6ZwHerqJ1xiDUlccjMe40SJt8Dl&sz=w1000",
+        fallbackImage: "https://lh3.googleusercontent.com/d/1ITFxp6ZwHerqJ1xiDUlccjMe40SJt8Dl",
+        available: true,
+        packages: [
+          {
+            id: "satuan",
+            label: "Satuan (1 pcs)",
+            price: 2000
+          },
+          {
+            id: "paket-puas",
+            label: "Paket Puas (1 Paket Isi 7 pcs - Aneka Rasa)",
+            price: 12000
+          }
+        ]
+      }
+    ];
+
+
+    /**
+     * =========================================================================
+     * 2. STATE APLIKASI (KERANJANG, PILIHAN AKTIF & FORM PEMESAN)
+     * =========================================================================
+     */
+    const state = {
+      // Menyimpan opsi paket & varian yang sedang dipilih user di masing-masing kartu/modal produk
+      selectedOptions: {},
+      // Menyimpan item keranjang dengan key unik: `${productId}::${packageId}::${variant}`
+      cart: {},
+      customer: {
+        name: "",
+        address: "",
+        notes: ""
+      },
+      errors: {
+        name: "",
+        address: ""
+      },
+      activeModalProductId: null
+    };
+
+    // Inisialisasi pilihan paket & varian default untuk setiap produk
+    function initSelectedOptions() {
+      PRODUCTS.forEach(product => {
+        if (!state.selectedOptions[product.id]) {
+          state.selectedOptions[product.id] = {
+            packageId: product.packages[0].id,
+            variant: product.variants && product.variants.length > 0 ? product.variants[0] : ""
+          };
+        }
+      });
+    }
+
+    /**
+     * =========================================================================
+     * 3. FUNGSI PEMBANTU (FORMATTER, FALLBACK GAMBAR & NOTIFIKASI)
+     * =========================================================================
+     */
+    function formatNumberID(amount) {
+      return Number(amount).toLocaleString('id-ID');
+    }
+
+    function formatRupiah(amount) {
+      return `Rp${formatNumberID(amount)}`;
+    }
+
+    // Fallback berlapis untuk gambar Google Drive -> lh3.googleusercontent -> SVG Data URI rapi
+    function handleImageError(imgEl, fallbackUrl, productName) {
+      const stage = imgEl.dataset.fallbackStage || "0";
+      if (stage === "0" && fallbackUrl) {
+        imgEl.dataset.fallbackStage = "1";
+        imgEl.src = fallbackUrl;
+      } else {
+        imgEl.onerror = null;
+        const encodedTitle = encodeURIComponent(productName);
+        imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450"><rect width="600" height="450" fill="%23EFE8DA"/><circle cx="300" cy="195" r="54" fill="%23E1EDE6"/><path d="M282 195h36M300 177v36" stroke="%234A8B6F" stroke-width="6" stroke-linecap="round"/><text x="300" y="285" font-family="sans-serif" font-size="20" font-weight="bold" fill="%232D5C48" text-anchor="middle">${encodedTitle}</text></svg>`;
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const bgClass = type === 'error' 
+        ? 'bg-rose-600 text-white' 
+        : 'bg-slate-800 text-white';
+
+      const iconSvg = type === 'error'
+        ? `<svg class="w-4 h-4 text-rose-200 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+        : `<svg class="w-4 h-4 text-sage-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`;
+
+      toast.className = `${bgClass} px-4 py-2.5 rounded-2xl shadow-lg text-xs sm:text-sm font-medium flex items-center gap-2.5 animate-pop pointer-events-auto max-w-xs`;
+      toast.innerHTML = `${iconSvg}<span>${message}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-6px)';
+        toast.style.transition = 'all 0.25s ease';
+        setTimeout(() => toast.remove(), 250);
+      }, 2200);
+    }
+
+    /**
+     * =========================================================================
+     * 4. LOGIKA PEMILIHAN PAKET, VARIAN & KERANJANG
+     * =========================================================================
+     */
+    function buildCartKey(productId, packageId, variant = "") {
+      return `${productId}::${packageId}::${variant || ""}`;
+    }
+
+    function selectPackage(productId, packageId) {
+      if (!state.selectedOptions[productId]) initSelectedOptions();
+      state.selectedOptions[productId].packageId = packageId;
+      renderProducts();
+      if (state.activeModalProductId === productId) {
+        openProductModal(productId);
+      }
+    }
+
+    function selectVariant(productId, variant) {
+      if (!state.selectedOptions[productId]) initSelectedOptions();
+      state.selectedOptions[productId].variant = variant;
+      renderProducts();
+      if (state.activeModalProductId === productId) {
+        openProductModal(productId);
+      }
+    }
+
+    // Mengubah kuantitas berdasarkan kombinasi spesifik (productId, packageId, variant)
+    function updateCartItemQuantity(productId, packageId, variant, delta) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product || !product.available) return;
+
+      const pkg = product.packages.find(p => p.id === packageId);
+      if (!pkg) return;
+
+      const cartKey = buildCartKey(productId, packageId, variant);
+      const existingItem = state.cart[cartKey];
+      const currentQty = existingItem ? existingItem.quantity : 0;
+      const newQty = Math.max(0, currentQty + delta);
+
+      if (newQty === 0) {
+        delete state.cart[cartKey];
+      } else {
+        const displayName = variant
+          ? `${product.name} - ${pkg.label} [Varian: ${variant}]`
+          : `${product.name} - ${pkg.label}`;
+
+        state.cart[cartKey] = {
+          key: cartKey,
+          productId: product.id,
+          productName: product.name,
+          packageId: pkg.id,
+          packageLabel: pkg.label,
+          variant: variant || "",
+          displayName,
+          price: pkg.price,
+          quantity: newQty
+        };
+
+        if (delta > 0 && currentQty === 0) {
+          showToast(`"${product.name}" ditambahkan`);
+        }
+      }
+
+      renderProducts();
+      renderCartPanels();
+      updateBadges();
+
+      if (state.activeModalProductId === productId) {
+        openProductModal(productId);
+      }
+    }
+
+    // Menghitung total kuantitas suatu produk di semua paket/varian (untuk badge kartu)
+    function getTotalProductQtyInCart(productId) {
+      return Object.values(state.cart)
+        .filter(item => item.productId === productId)
+        .reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    // Mengambil daftar item aktif di keranjang beserta subtotalnya
+    function getCartItems() {
+      return Object.values(state.cart)
+        .filter(item => item.quantity > 0)
+        .map(item => ({
+          ...item,
+          subtotal: item.price * item.quantity
+        }));
+    }
+
+    function getCartSummary() {
+      const items = getCartItems();
+      const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+      const totalPrice = items.reduce((sum, item) => sum + item.subtotal, 0);
+      return { items, totalItems, totalPrice };
+    }
+
+    /**
+     * =========================================================================
+     * 5. RENDER TAMPILAN KATALOG PRODUK (DENGAN PAKET HARGA & VARIAN RASA)
+     * =========================================================================
+     */
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      const countLabel = document.getElementById('product-count-label');
+      
+      countLabel.textContent = `Menampilkan ${PRODUCTS.length} produk`;
+
+      grid.innerHTML = PRODUCTS.map(product => {
+        const isAvailable = product.available;
+        const selected = state.selectedOptions[product.id] || {
+          packageId: product.packages[0].id,
+          variant: product.variants ? product.variants[0] : ""
+        };
+
+        const activePackage = product.packages.find(p => p.id === selected.packageId) || product.packages[0];
+        const activeCartKey = buildCartKey(product.id, activePackage.id, selected.variant);
+        const currentComboQty = state.cart[activeCartKey] ? state.cart[activeCartKey].quantity : 0;
+        const totalProductQty = getTotalProductQtyInCart(product.id);
+
+        // Render Pilihan Paket Harga
+        const packageSelectorHTML = `
+          <div class="mb-3">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Pilih Paket / Ukuran:</p>
+            <div class="flex flex-col gap-1.5">
+              ${product.packages.map(pkg => {
+                const isSelected = pkg.id === activePackage.id;
+                return `
+                  <button
+                    type="button"
+                    onclick="selectPackage('${product.id}', '${pkg.id}')"
+                    class="w-full text-left px-3 py-2 rounded-xl border text-xs transition-all flex items-center justify-between gap-2 ${
+                      isSelected
+                        ? 'bg-sage-50 border-sage-500 text-sage-800 font-semibold shadow-2xs'
+                        : 'bg-cream-50/60 border-cream-200 text-slate-600 hover:border-sage-300 hover:bg-white'
+                    }"
+                  >
+                    <span class="leading-snug">${pkg.label}</span>
+                    <span class="font-display font-bold shrink-0 ${isSelected ? 'text-sage-700' : 'text-slate-700'}">
+                      ${formatRupiah(pkg.price)}
+                    </span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+
+        // Render Pilihan Varian Rasa (jika produk memilikinya, misal Donat Lembut)
+        const variantSelectorHTML = (product.variants && product.variants.length > 0) ? `
+          <div class="mb-3.5">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Varian Rasa:</p>
+            <div class="flex flex-wrap gap-1.5">
+              ${product.variants.map(variant => {
+                const isSelected = selected.variant === variant;
+                return `
+                  <button
+                    type="button"
+                    onclick="selectVariant('${product.id}', '${variant}')"
+                    class="px-3 py-1 rounded-full text-xs font-medium border transition-all ${
+                      isSelected
+                        ? 'bg-sage-600 border-sage-600 text-white shadow-2xs'
+                        : 'bg-white border-cream-200 text-slate-600 hover:border-sage-300 hover:text-sage-700'
+                    }"
+                  >
+                    ${variant}
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        ` : '';
+
+        // Kontrol tombol Tambah ke Pesanan atau +/- untuk kombinasi aktif
+        let actionControlHTML = '';
+        if (!isAvailable) {
+          actionControlHTML = `
+            <button disabled class="w-full py-2.5 px-4 rounded-xl bg-slate-100 text-slate-400 font-semibold text-sm cursor-not-allowed">
+              Stok Habis
+            </button>
+          `;
+        } else if (currentComboQty === 0) {
+          actionControlHTML = `
+            <button 
+              type="button"
+              onclick="updateCartItemQuantity('${product.id}', '${activePackage.id}', '${selected.variant}', 1)" 
+              class="w-full py-2.5 px-4 rounded-xl bg-sage-50 hover:bg-sage-600 text-sage-700 hover:text-white border border-sage-200 hover:border-sage-600 font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 active:scale-95"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              <span>Tambah ke Pesanan</span>
+            </button>
+          `;
+        } else {
+          actionControlHTML = `
+            <div class="flex items-center justify-between bg-sage-50 border border-sage-200 rounded-xl p-1">
+              <button 
+                type="button"
+                onclick="updateCartItemQuantity('${product.id}', '${activePackage.id}', '${selected.variant}', -1)" 
+                aria-label="Kurangi jumlah"
+                class="w-9 h-9 rounded-lg bg-white text-sage-700 hover:bg-sage-100 flex items-center justify-center font-bold text-lg shadow-2xs transition active:scale-90"
+              >
+                &minus;
+              </button>
+              <span class="font-display font-bold text-slate-800 text-sm px-2 text-center select-none">
+                ${currentComboQty} <span class="text-xs font-normal text-slate-500">di keranjang</span>
+              </span>
+              <button 
+                type="button"
+                onclick="updateCartItemQuantity('${product.id}', '${activePackage.id}', '${selected.variant}', 1)" 
+                aria-label="Tambah jumlah"
+                class="w-9 h-9 rounded-lg bg-sage-600 text-white hover:bg-sage-700 flex items-center justify-center font-bold text-lg shadow-2xs transition active:scale-90"
+              >
+                +
+              </button>
+            </div>
+          `;
+        }
+
+        return `
+          <article class="group bg-white rounded-3xl border border-cream-200 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col ${!isAvailable ? 'opacity-75' : ''}">
+            <!-- Gambar Produk (Klik untuk detail) -->
+            <div onclick="openProductModal('${product.id}')" class="relative aspect-[4/3] bg-cream-100 overflow-hidden cursor-pointer">
+              <img 
+                src="${product.image}" 
+                alt="${escapeHtml(product.name)}" 
+                loading="lazy"
+                onerror="handleImageError(this, '${product.fallbackImage}', '${escapeHtml(product.name)}')"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${!isAvailable ? 'grayscale' : ''}"
+              />
+              <!-- Badge Status -->
+              ${!isAvailable ? `
+                <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-slate-800/85 text-white text-xs font-semibold backdrop-blur-xs">
+                  Habis
+                </span>
+              ` : totalProductQty > 0 ? `
+                <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-sage-600 text-white text-xs font-bold shadow-sm">
+                  Total ${totalProductQty}x dipilih
+                </span>
+              ` : ''}
+              
+              <!-- Hint Lihat Detail -->
+              <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/10 transition-colors flex items-end justify-end p-3">
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-xs text-slate-700 text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-xs">
+                  Lihat Detail
+                </span>
+              </div>
+            </div>
+
+            <!-- Informasi Produk -->
+            <div class="p-5 flex-1 flex flex-col">
+              <div class="flex-1">
+                <h4 
+                  onclick="openProductModal('${product.id}')" 
+                  class="font-display font-bold text-base text-slate-800 group-hover:text-sage-700 transition-colors cursor-pointer leading-snug mb-1"
+                >
+                  ${product.name}
+                </h4>
+                <p class="font-display font-extrabold text-sage-600 text-base mb-2">
+                  ${formatRupiah(activePackage.price)}
+                </p>
+                <p class="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-3.5">
+                  ${product.description}
+                </p>
+
+                <!-- Pemilih Paket Harga -->
+                ${packageSelectorHTML}
+
+                <!-- Pemilih Varian Rasa (Jika Ada) -->
+                ${variantSelectorHTML}
+              </div>
+
+              <!-- Tombol Aksi -->
+              <div class="pt-3 border-t border-cream-100 mt-auto">
+                ${actionControlHTML}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    /**
+     * =========================================================================
+     * 6. RENDER PANEL KERANJANG & FORM CHECKOUT (DESKTOP & MOBILE SINKRON)
+     * =========================================================================
+     */
+    function generateCheckoutHTML(prefix) {
+      const { items, totalItems, totalPrice } = getCartSummary();
+
+      let cartListHTML = '';
+      if (items.length === 0) {
+        cartListHTML = `
+          <div class="py-8 px-4 text-center bg-cream-50/70 rounded-2xl border border-dashed border-cream-200">
+            <div class="w-12 h-12 rounded-2xl bg-sage-50 text-sage-500 flex items-center justify-center mx-auto mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+            </div>
+            <p class="font-display font-semibold text-sm text-slate-700 mb-1">Keranjangmu masih kosong</p>
+            <p class="text-xs text-slate-500">Pilih paket & produk favoritmu untuk mulai self-reward hari ini.</p>
+          </div>
+        `;
+      } else {
+        cartListHTML = `
+          <div class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar pr-1">
+            ${items.map(item => `
+              <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-cream-50 border border-cream-200/80">
+                <div class="flex-1 min-w-0">
+                  <p class="font-display font-semibold text-xs sm:text-sm text-slate-800 leading-snug">
+                    ${item.productName}
+                  </p>
+                  <div class="flex flex-wrap items-center gap-1.5 mt-1">
+                    <span class="inline-block px-2 py-0.5 rounded-md bg-sage-100/80 text-sage-800 text-[11px] font-medium">
+                      ${item.packageLabel}
+                    </span>
+                    ${item.variant ? `
+                      <span class="inline-block px-2 py-0.5 rounded-md bg-amber-100/80 text-amber-900 text-[11px] font-semibold">
+                        Varian: ${item.variant}
+                      </span>
+                    ` : ''}
+                  </div>
+                  <p class="text-xs text-slate-500 mt-1.5">${formatRupiah(item.price)} &times; ${item.quantity}</p>
+                  <p class="text-xs font-bold text-sage-700 mt-0.5">Subtotal: ${formatRupiah(item.subtotal)}</p>
+                </div>
+                
+                <!-- Kontrol Kuantitas Mini -->
+                <div class="flex items-center gap-1.5 bg-white border border-cream-200 rounded-xl p-1 shrink-0">
+                  <button 
+                    type="button"
+                    onclick="updateCartItemQuantity('${item.productId}', '${item.packageId}', '${item.variant}', -1)" 
+                    class="w-6 h-6 rounded-lg hover:bg-cream-100 text-slate-700 flex items-center justify-center font-bold text-sm transition"
+                    aria-label="Kurangi"
+                  >&minus;</button>
+                  <span class="text-xs font-bold text-slate-800 w-5 text-center">${item.quantity}</span>
+                  <button 
+                    type="button"
+                    onclick="updateCartItemQuantity('${item.productId}', '${item.packageId}', '${item.variant}', 1)" 
+                    class="w-6 h-6 rounded-lg bg-sage-50 hover:bg-sage-100 text-sage-700 flex items-center justify-center font-bold text-sm transition"
+                    aria-label="Tambah"
+                  >+</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      return `
+        <div class="p-5 sm:p-6">
+          <!-- Header Keranjang -->
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-cream-200">
+            <div class="flex items-center gap-2.5">
+              <h3 class="font-display font-bold text-lg text-slate-800">Ringkasan Pesanan</h3>
+              <span class="px-2.5 py-0.5 rounded-full bg-sage-100 text-sage-700 text-xs font-bold">
+                ${totalItems} item
+              </span>
+            </div>
+            ${prefix === 'mobile' ? `
+              <button onclick="closeMobileCart()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Daftar Item -->
+          <div class="mb-5">
+            ${cartListHTML}
+          </div>
+
+          <!-- Total Keseluruhan -->
+          <div class="flex items-center justify-between py-3.5 px-4 rounded-2xl bg-sage-50 border border-sage-100 mb-5">
+            <span class="text-sm font-medium text-slate-700">Total Pesanan</span>
+            <span class="font-display font-extrabold text-lg sm:text-xl text-sage-700">
+              ${formatRupiah(totalPrice)}
+            </span>
+          </div>
+
+          <!-- Form Data Pemesan -->
+          <form onsubmit="handleOrderSubmit(event)" class="space-y-3.5" novalidate>
+            <h4 class="font-display font-bold text-sm text-slate-800 pt-1">Data Pemesan</h4>
+            
+            <!-- Nama Pemesan -->
+            <div>
+              <label for="${prefix}-customer-name" class="block text-xs font-semibold text-slate-700 mb-1">
+                Nama Lengkap <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="${prefix}-customer-name"
+                value="${escapeHtml(state.customer.name)}"
+                oninput="handleInputChange('name', this.value, '${prefix}')"
+                placeholder="Contoh: Alya Putri"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-cream-50/60 border ${state.errors.name ? 'border-rose-400 focus:ring-rose-200' : 'border-cream-200 focus:border-sage-500 focus:ring-sage-100'} text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-3 transition"
+              />
+              <p id="${prefix}-error-name" class="text-[11px] text-rose-500 font-medium mt-1 ${state.errors.name ? '' : 'hidden'}">
+                ${state.errors.name}
+              </p>
+            </div>
+
+            <!-- Alamat Singkat -->
+            <div>
+              <label for="${prefix}-customer-address" class="block text-xs font-semibold text-slate-700 mb-1">
+                Alamat Singkat / Lokasi Pengantaran <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="${prefix}-customer-address"
+                value="${escapeHtml(state.customer.address)}"
+                oninput="handleInputChange('address', this.value, '${prefix}')"
+                placeholder="Contoh: Jl. Melati No. 12, Depok"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-cream-50/60 border ${state.errors.address ? 'border-rose-400 focus:ring-rose-200' : 'border-cream-200 focus:border-sage-500 focus:ring-sage-100'} text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-3 transition"
+              />
+              <p id="${prefix}-error-address" class="text-[11px] text-rose-500 font-medium mt-1 ${state.errors.address ? '' : 'hidden'}">
+                ${state.errors.address}
+              </p>
+            </div>
+
+            <!-- Catatan Pesanan (Opsional) -->
+            <div>
+              <label for="${prefix}-customer-notes" class="block text-xs font-semibold text-slate-700 mb-1">
+                Catatan Pesanan <span class="text-slate-400 font-normal">(Opsional)</span>
+              </label>
+              <textarea 
+                id="${prefix}-customer-notes"
+                rows="2"
+                oninput="handleInputChange('notes', this.value, '${prefix}')"
+                placeholder="Contoh: Donat mix 2 cokelat 1 gula, titip di depan rumah"
+                class="w-full px-3.5 py-2 rounded-xl bg-cream-50/60 border border-cream-200 focus:border-sage-500 focus:ring-3 focus:ring-sage-100 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition resize-none"
+              >${escapeHtml(state.customer.notes)}</textarea>
+            </div>
+
+            <!-- Tombol Utama Pesan via WhatsApp -->
+            <div class="pt-2">
+              <button 
+                type="submit"
+                class="w-full py-3.5 px-5 rounded-2xl bg-sage-600 hover:bg-sage-700 text-white font-display font-bold text-sm shadow-soft hover:shadow-soft-lg flex items-center justify-center gap-2.5 transition-all duration-200 active:scale-[0.98]"
+              >
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
+                </svg>
+                <span>Pesan Sekarang via WhatsApp</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      `;
+    }
+
+    function renderCartPanels() {
+      const desktopContainer = document.getElementById('desktop-checkout-container');
+      const mobileContainer = document.getElementById('mobile-checkout-container');
+      
+      if (desktopContainer) {
+        desktopContainer.innerHTML = generateCheckoutHTML('desktop');
+      }
+      if (mobileContainer) {
+        mobileContainer.innerHTML = generateCheckoutHTML('mobile');
+      }
+    }
+
+    function handleInputChange(field, value, sourcePrefix) {
+      state.customer[field] = value;
+
+      if (field === 'name' && value.trim() !== '') {
+        state.errors.name = '';
+      }
+      if (field === 'address' && value.trim() !== '') {
+        state.errors.address = '';
+      }
+
+      ['desktop', 'mobile'].forEach(prefix => {
+        if (prefix !== sourcePrefix) {
+          const otherInput = document.getElementById(`${prefix}-customer-${field}`);
+          if (otherInput) otherInput.value = value;
+        }
+        if (field === 'name' || field === 'address') {
+          const errEl = document.getElementById(`${prefix}-error-${field}`);
+          const inputEl = document.getElementById(`${prefix}-customer-${field}`);
+          if (errEl && inputEl) {
+            if (state.errors[field]) {
+              errEl.textContent = state.errors[field];
+              errEl.classList.remove('hidden');
+              inputEl.classList.add('border-rose-400');
+            } else {
+              errEl.classList.add('hidden');
+              inputEl.classList.remove('border-rose-400');
+            }
+          }
+        }
+      });
+    }
+
+    function updateBadges() {
+      const { totalItems, totalPrice } = getCartSummary();
+      
+      const headerBadge = document.getElementById('header-cart-badge');
+      const floatingBadge = document.getElementById('floating-cart-badge');
+      const floatingTotal = document.getElementById('floating-cart-total');
+
+      if (totalItems > 0) {
+        headerBadge.textContent = totalItems;
+        headerBadge.classList.remove('hidden');
+      } else {
+        headerBadge.classList.add('hidden');
+      }
+
+      floatingBadge.textContent = totalItems;
+      floatingTotal.textContent = formatRupiah(totalPrice);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    /**
+     * =========================================================================
+     * 7. VALIDASI & PENYUSUNAN PESAN WHATSAPP
+     * =========================================================================
+     */
+    function validateOrder() {
+      const { items } = getCartSummary();
+      let isValid = true;
+
+      if (items.length === 0) {
+        showToast('Pilih minimal 1 produk terlebih dahulu!', 'error');
+        return false;
+      }
+
+      if (!state.customer.name.trim()) {
+        state.errors.name = 'Nama lengkap wajib diisi.';
+        isValid = false;
+      } else {
+        state.errors.name = '';
+      }
+
+      if (!state.customer.address.trim()) {
+        state.errors.address = 'Alamat singkat wajib diisi.';
+        isValid = false;
+      } else {
+        state.errors.address = '';
+      }
+
+      renderCartPanels();
+
+      if (!isValid) {
+        showToast('Mohon lengkapi nama dan alamat pengantaran.', 'error');
+      }
+
+      return isValid;
+    }
+
+    function buildWhatsAppMessage() {
+      const { items, totalPrice } = getCartSummary();
+      const nama = state.customer.name.trim();
+      const alamat = state.customer.address.trim();
+      const catatan = state.customer.notes.trim() || "-";
+
+      let detailLines = [];
+      let lineNumber = 1;
+
+      items.forEach(item => {
+        detailLines.push(`${lineNumber++}. ${item.displayName}`);
+        detailLines.push(`${lineNumber++}. Harga: Rp${formatNumberID(item.price)}`);
+        detailLines.push(`${lineNumber++}. Jumlah: ${item.quantity}`);
+        detailLines.push(`${lineNumber++}. Subtotal: Rp${formatNumberID(item.subtotal)}`);
+      });
+
+      const message = [
+        "Halo, saya ingin memesan produk.",
+        "",
+        "DATA PEMESAN",
+        `Nama: ${nama}`,
+        `Alamat: ${alamat}`,
+        "",
+        "DETAIL PESANAN",
+        ...detailLines,
+        "",
+        "CATATAN",
+        catatan,
+        "",
+        `TOTAL PESANAN: Rp${formatNumberID(totalPrice)}`,
+        "",
+        "Mohon konfirmasi pesanan saya. Terima kasih!"
+      ].join("\n");
+
+      return message;
+    }
+
+    function handleOrderSubmit(event) {
+      event.preventDefault();
+      if (!validateOrder()) return;
+
+      const message = buildWhatsAppMessage();
+      document.getElementById('wa-message-preview').textContent = message;
+      
+      closeMobileCart();
+      document.getElementById('confirm-wa-modal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-wa-modal').classList.add('hidden');
+    }
+
+    function proceedToWhatsApp() {
+      const message = buildWhatsAppMessage();
+      const encodedMessage = encodeURIComponent(message);
+      const waUrl = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodedMessage}`;
+      
+      closeConfirmModal();
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    /**
+     * =========================================================================
+     * 8. MODAL DETAIL PRODUK (DENGAN PEMILIH PAKET & VARIAN) & DRAWER MOBILE
+     * =========================================================================
+     */
+    function openProductModal(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      state.activeModalProductId = productId;
+      const selected = state.selectedOptions[product.id] || {
+        packageId: product.packages[0].id,
+        variant: product.variants ? product.variants[0] : ""
+      };
+      const activePackage = product.packages.find(p => p.id === selected.packageId) || product.packages[0];
+      const activeCartKey = buildCartKey(product.id, activePackage.id, selected.variant);
+      const currentComboQty = state.cart[activeCartKey] ? state.cart[activeCartKey].quantity : 0;
+
+      const modal = document.getElementById('product-detail-modal');
+      const content = document.getElementById('product-detail-content');
+
+      content.innerHTML = `
+        <div class="relative aspect-[16/10] bg-cream-100">
+          <img 
+            src="${product.image}" 
+            alt="${escapeHtml(product.name)}" 
+            onerror="handleImageError(this, '${product.fallbackImage}', '${escapeHtml(product.name)}')"
+            class="w-full h-full object-cover"
+          />
+          <button 
+            onclick="closeProductModal()" 
+            aria-label="Tutup detail"
+            class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center shadow-md transition"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="p-6 max-h-[65vh] overflow-y-auto custom-scrollbar">
+          <div class="flex items-start justify-between gap-2 mb-1.5">
+            <h3 class="font-display font-bold text-xl text-slate-800 leading-snug">${product.name}</h3>
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 ${product.available ? 'bg-sage-100 text-sage-700' : 'bg-slate-100 text-slate-500'}">
+              ${product.available ? 'Tersedia' : 'Habis'}
+            </span>
+          </div>
+          <p class="font-display font-extrabold text-xl text-sage-600 mb-3">${formatRupiah(activePackage.price)}</p>
+          <p class="text-sm text-slate-600 leading-relaxed mb-5">${product.description}</p>
+          
+          <!-- Pilihan Paket di Modal -->
+          <div class="mb-4">
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Pilih Paket / Ukuran:</p>
+            <div class="space-y-2">
+              ${product.packages.map(pkg => {
+                const isSelected = pkg.id === activePackage.id;
+                return `
+                  <button
+                    type="button"
+                    onclick="selectPackage('${product.id}', '${pkg.id}')"
+                    class="w-full text-left px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm transition-all flex items-center justify-between gap-2 ${
+                      isSelected
+                        ? 'bg-sage-50 border-sage-500 text-sage-800 font-semibold'
+                        : 'bg-cream-50/60 border-cream-200 text-slate-600 hover:border-sage-300'
+                    }"
+                  >
+                    <span>${pkg.label}</span>
+                    <span class="font-display font-bold shrink-0">${formatRupiah(pkg.price)}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <!-- Pilihan Varian Rasa di Modal -->
+          ${(product.variants && product.variants.length > 0) ? `
+            <div class="mb-5">
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Varian Rasa:</p>
+              <div class="flex flex-wrap gap-2">
+                ${product.variants.map(variant => {
+                  const isSelected = selected.variant === variant;
+                  return `
+                    <button
+                      type="button"
+                      onclick="selectVariant('${product.id}', '${variant}')"
+                      class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                        isSelected
+                          ? 'bg-sage-600 border-sage-600 text-white shadow-xs'
+                          : 'bg-white border-cream-200 text-slate-600 hover:border-sage-300'
+                      }"
+                    >
+                      ${variant}
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Tombol Aksi Modal -->
+          ${product.available ? (
+            currentComboQty === 0 ? `
+              <button 
+                type="button"
+                onclick="updateCartItemQuantity('${product.id}', '${activePackage.id}', '${selected.variant}', 1)" 
+                class="w-full py-3.5 px-5 rounded-2xl bg-sage-600 hover:bg-sage-700 text-white font-display font-bold text-sm shadow-soft flex items-center justify-center gap-2 transition active:scale-95"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Tambah ke Pesanan</span>
+              </button>
+            ` : `
+              <div class="flex items-center justify-between bg-sage-50 border border-sage-200 rounded-2xl p-1.5">
+                <button 
+                  type="button"
+                  onclick="updateCartItemQuantity('${product.id}', '${activePackage.id}', '${selected.variant}', -1)" 
+                  class="w-10 h-10 rounded-xl bg-white text-sage-700 hover:bg-sage-100 flex items-center justify-center font-bold text-lg shadow-2xs transition"
+                >&minus;</button>
+                <span class="font-display font-bold text-slate-800 text-sm">
+                  ${currentComboQty} <span class="text-xs font-normal text-slate-500">di keranjang</span>
+                </span>
+                <button 
+                  type="button"
+                  onclick="updateCartItemQuantity('${product.id}', '${activePackage.id}', '${selected.variant}', 1)" 
+                  class="w-10 h-10 rounded-xl bg-sage-600 text-white hover:bg-sage-700 flex items-center justify-center font-bold text-lg shadow-2xs transition"
+                >+</button>
+              </div>
+            `
+          ) : `
+            <button disabled class="w-full py-3.5 px-5 rounded-2xl bg-slate-100 text-slate-400 font-semibold text-sm cursor-not-allowed">
+              Maaf, Produk Sedang Habis
+            </button>
+          `}
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeProductModal() {
+      state.activeModalProductId = null;
+      document.getElementById('product-detail-modal').classList.add('hidden');
+    }
+
+    function openMobileCart() {
+      renderCartPanels();
+      document.getElementById('mobile-cart-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileCart() {
+      document.getElementById('mobile-cart-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    /**
+     * =========================================================================
+     * 9. INISIALISASI APLIKASI SAAT HALAMAN DIMUAT
+     * =========================================================================
+     */
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('header-store-name').textContent = STORE_CONFIG.name;
+      document.getElementById('header-store-tagline').textContent = STORE_CONFIG.tagline;
+      document.getElementById('footer-store-name').textContent = STORE_CONFIG.name;
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+      initSelectedOptions();
+      renderProducts();
+      renderCartPanels();
+      updateBadges();
+    });
+  </script>
+</body>
+</html>
