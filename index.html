@@ -132,7 +132,7 @@
       <!-- Info Singkat di Desktop -->
       <div class="hidden lg:flex items-center gap-2 text-sm text-slate-600 bg-cream-100/80 px-4 py-2 rounded-full border border-cream-200">
         <span class="w-2 h-2 rounded-full bg-sage-500 animate-pulse"></span>
-        <span>Pesan mudah & langsung terhubung ke WhatsApp</span>
+        <span>Pesan mudah, bayar praktis & langsung ke WhatsApp</span>
       </div>
     </div>
   </header>
@@ -148,7 +148,7 @@
           Saatnya beri hadiah kecil untuk dirimu sendiri ✨
         </h2>
         <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
-          Pilih produk favoritmu di bawah ini, atur jumlah pesanan, lalu kirim detail pesananmu langsung ke WhatsApp kami dalam sekali klik.
+          Pilih produk favoritmu di bawah ini, lakukan pembayaran via QRIS atau DANA saat checkout, lalu kirim struk pesanan langsung ke WhatsApp kami.
         </p>
       </div>
       <div class="hidden md:flex flex-col items-end shrink-0 text-right">
@@ -213,12 +213,12 @@
           </span>
         </div>
         <div class="text-left">
-          <p class="text-xs text-sage-100 font-medium">Ringkasan Pesanan</p>
+          <p class="text-xs text-sage-100 font-medium">Ringkasan & Pembayaran</p>
           <p id="floating-cart-total" class="font-display font-bold text-base leading-tight">Rp0</p>
         </div>
       </div>
       <div class="flex items-center gap-1.5 font-semibold text-sm bg-white/15 px-3.5 py-2 rounded-xl">
-        <span>Lihat & Pesan</span>
+        <span>Checkout</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
         </svg>
@@ -256,14 +256,68 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL KONFIRMASI SEBELUM KE WHATSAPP ==================== -->
+  <!-- ==================== MODAL ZOOM BARCODE QRIS ==================== -->
+  <div id="qris-zoom-modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div onclick="closeQrisModal()" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs transition-opacity"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl animate-pop z-10 border border-cream-200 text-center">
+      <div class="flex items-center justify-between mb-3">
+        <div class="text-left">
+          <h4 class="font-display font-bold text-base text-slate-800">Scan Barcode Pembayaran</h4>
+          <p class="text-xs text-slate-500">Total bayar: <span id="qris-modal-total" class="font-bold text-sage-700">Rp0</span></p>
+        </div>
+        <button 
+          type="button"
+          onclick="closeQrisModal()" 
+          aria-label="Tutup barcode"
+          class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="bg-cream-50 p-3 rounded-2xl border border-cream-200 mb-3">
+        <img 
+          id="qris-zoom-img"
+          src="" 
+          alt="Barcode Pembayaran QRIS" 
+          class="w-full max-h-[60vh] object-contain rounded-xl mx-auto"
+        />
+      </div>
+
+      <div class="flex items-center justify-center gap-2">
+        <a 
+          id="qris-drive-link"
+          href="#" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="flex-1 py-2.5 px-3 rounded-xl bg-sage-50 hover:bg-sage-100 text-sage-700 font-semibold text-xs border border-sage-200 transition"
+        >
+          Buka di Google Drive
+        </a>
+        <button 
+          type="button"
+          onclick="closeQrisModal()" 
+          class="py-2.5 px-5 rounded-xl bg-sage-600 hover:bg-sage-700 text-white font-semibold text-xs transition"
+        >
+          Selesai
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL KONFIRMASI & PEMBAYARAN SEBELUM KE WHATSAPP ==================== -->
   <div id="confirm-wa-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <!-- Backdrop -->
     <div onclick="closeConfirmModal()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
     
-    <!-- Modal Content: Tampilan Struk Digital Modern -->
-    <div class="relative bg-white w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl animate-pop z-10 border border-cream-200 flex flex-col max-h-[90vh]">
-      <div class="flex items-center justify-between gap-3 mb-4 shrink-0">
+    <!-- Modal Content: Pembayaran + Struk Digital Modern -->
+    <div class="relative bg-white w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl animate-pop z-10 border border-cream-200 flex flex-col max-h-[92vh]">
+      <div class="flex items-center justify-between gap-3 mb-3.5 shrink-0">
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-2xl bg-sage-100 text-sage-700 flex items-center justify-center shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -271,8 +325,8 @@
             </svg>
           </div>
           <div>
-            <h4 class="font-display font-bold text-lg text-slate-800 leading-tight">Pratinjau Struk Pesanan</h4>
-            <p class="text-xs text-slate-500">Siap dikirim rapi ke WhatsApp penjual</p>
+            <h4 class="font-display font-bold text-lg text-slate-800 leading-tight">Pembayaran & Struk</h4>
+            <p class="text-xs text-slate-500">Selesaikan pembayaran lalu kirim ke WhatsApp</p>
           </div>
         </div>
         <button 
@@ -287,17 +341,27 @@
         </button>
       </div>
 
-      <!-- Kertas Struk Digital -->
-      <div class="relative bg-cream-50 border-2 border-dashed border-sage-200 rounded-2xl p-4 sm:p-5 mb-4 overflow-y-auto custom-scrollbar shadow-inner">
-        <div class="flex items-center justify-between text-[10px] font-semibold uppercase tracking-widest text-sage-600 mb-2.5 pb-2 border-b border-dashed border-cream-200">
-          <span>Nota Digital WhatsApp</span>
-          <span class="bg-sage-100 text-sage-700 px-2 py-0.5 rounded-full">Format Terverifikasi</span>
+      <!-- Area Scrollable: Panduan Pembayaran + Kertas Struk -->
+      <div class="overflow-y-auto custom-scrollbar space-y-3.5 mb-4 pr-0.5">
+        
+        <!-- Kartu Instruksi Pembayaran -->
+        <div id="modal-payment-instruction" class="bg-sage-50/90 border border-sage-200 rounded-2xl p-3.5">
+          <!-- Diisi otomatis sesuai pilihan metode pembayaran user -->
         </div>
-        <pre id="wa-message-preview" class="text-[12.5px] sm:text-[13px] text-slate-800 whitespace-pre-wrap font-mono leading-relaxed tracking-tight select-all"></pre>
+
+        <!-- Kertas Struk Digital -->
+        <div class="relative bg-cream-50 border-2 border-dashed border-sage-200 rounded-2xl p-4 shadow-inner">
+          <div class="flex items-center justify-between text-[10px] font-semibold uppercase tracking-widest text-sage-600 mb-2 pb-2 border-b border-dashed border-cream-200">
+            <span>Nota Digital WhatsApp</span>
+            <span class="bg-sage-100 text-sage-700 px-2 py-0.5 rounded-full">Format Terverifikasi</span>
+          </div>
+          <pre id="wa-message-preview" class="text-[12px] sm:text-[12.5px] text-slate-800 whitespace-pre-wrap font-mono leading-relaxed tracking-tight select-all"></pre>
+        </div>
+
       </div>
 
       <!-- Tombol Salin Struk (Praktis) -->
-      <div class="mb-3 shrink-0">
+      <div class="mb-2.5 shrink-0">
         <button 
           type="button"
           onclick="copyReceiptText()" 
@@ -327,14 +391,14 @@
           <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
             <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
           </svg>
-          <span>Kirim Pesanan ke WhatsApp</span>
+          <span>Kirim ke WhatsApp</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ==================== TOAST NOTIFICATION ==================== -->
-  <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <div id="toast-container" class="fixed top-20 right-4 z-[70] flex flex-col gap-2 pointer-events-none"></div>
 
 
   <!-- =========================================================================
@@ -343,18 +407,20 @@
   <script>
     /**
      * =========================================================================
-     * 1. KONFIGURASI TOKO & DAFTAR PRODUK (MUDAH DIEDIT)
+     * 1. KONFIGURASI TOKO, PEMBAYARAN & DAFTAR PRODUK (MUDAH DIEDIT)
      * =========================================================================
-     * Panduan Mengedit:
-     * - Ubah `whatsappNumber` menggunakan format internasional tanpa tanda '+' (contoh: 6285839227740).
-     * - Setiap produk memiliki array `packages` untuk opsi harga satuan/paket.
-     * - Tambahkan array `variants` (opsional) jika produk memiliki pilihan rasa (contoh: Donat Lembut).
-     * - `available` diisi `true` jika stok tersedia, atau `false` jika stok habis.
      */
     const STORE_CONFIG = {
       name: "yukkk apresiasi diri",
       tagline: "self reward penting",
-      whatsappNumber: "6285839227740"
+      whatsappNumber: "6285839227740",
+      payment: {
+        qrisDriveId: "116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK",
+        qrisDriveUrl: "https://drive.google.com/file/d/116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK/view?usp=sharing",
+        qrisImage: "https://drive.google.com/thumbnail?id=116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK&sz=w1000",
+        qrisFallbackImage: "https://lh3.googleusercontent.com/d/116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK",
+        danaNumber: "085658987525"
+      }
     };
 
     const PRODUCTS = [
@@ -432,14 +498,13 @@
 
     /**
      * =========================================================================
-     * 2. STATE APLIKASI (KERANJANG, PILIHAN AKTIF & FORM PEMESAN)
+     * 2. STATE APLIKASI (KERANJANG, PILIHAN AKTIF, PEMBAYARAN & FORM PEMESAN)
      * =========================================================================
      */
     const state = {
-      // Menyimpan opsi paket & varian yang sedang dipilih user di masing-masing kartu/modal produk
       selectedOptions: {},
-      // Menyimpan item keranjang dengan key unik: `${productId}::${packageId}::${variant}`
       cart: {},
+      paymentMethod: "qris", // "qris" atau "dana"
       customer: {
         name: "",
         address: "",
@@ -452,7 +517,6 @@
       activeModalProductId: null
     };
 
-    // Inisialisasi pilihan paket & varian default untuk setiap produk
     function initSelectedOptions() {
       PRODUCTS.forEach(product => {
         if (!state.selectedOptions[product.id]) {
@@ -466,7 +530,7 @@
 
     /**
      * =========================================================================
-     * 3. FUNGSI PEMBANTU (FORMATTER, FALLBACK GAMBAR & NOTIFIKASI)
+     * 3. FUNGSI PEMBANTU (FORMATTER, FALLBACK GAMBAR, COPY & NOTIFIKASI)
      * =========================================================================
      */
     function formatNumberID(amount) {
@@ -477,7 +541,6 @@
       return `Rp${formatNumberID(amount)}`;
     }
 
-    // Fallback berlapis untuk gambar Google Drive -> lh3.googleusercontent -> SVG Data URI rapi
     function handleImageError(imgEl, fallbackUrl, productName) {
       const stage = imgEl.dataset.fallbackStage || "0";
       if (stage === "0" && fallbackUrl) {
@@ -488,6 +551,26 @@
         const encodedTitle = encodeURIComponent(productName);
         imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450"><rect width="600" height="450" fill="%23EFE8DA"/><circle cx="300" cy="195" r="54" fill="%23E1EDE6"/><path d="M282 195h36M300 177v36" stroke="%234A8B6F" stroke-width="6" stroke-linecap="round"/><text x="300" y="285" font-family="sans-serif" font-size="20" font-weight="bold" fill="%232D5C48" text-anchor="middle">${encodedTitle}</text></svg>`;
       }
+    }
+
+    function copyTextToClipboard(text, successMsg = 'Berhasil disalin!') {
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = text;
+      tempTextArea.style.position = 'fixed';
+      tempTextArea.style.opacity = '0';
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMsg);
+      } catch (err) {
+        showToast('Gagal menyalin teks.', 'error');
+      }
+      document.body.removeChild(tempTextArea);
+    }
+
+    function copyDanaNumber() {
+      copyTextToClipboard(STORE_CONFIG.payment.danaNumber, `Nomor DANA ${STORE_CONFIG.payment.danaNumber} disalin!`);
     }
 
     function showToast(message, type = 'success') {
@@ -517,7 +600,7 @@
 
     /**
      * =========================================================================
-     * 4. LOGIKA PEMILIHAN PAKET, VARIAN & KERANJANG
+     * 4. LOGIKA PEMILIHAN PAKET, VARIAN, PEMBAYARAN & KERANJANG
      * =========================================================================
      */
     function buildCartKey(productId, packageId, variant = "") {
@@ -542,7 +625,15 @@
       }
     }
 
-    // Mengubah kuantitas berdasarkan kombinasi spesifik (productId, packageId, variant)
+    function selectPaymentMethod(method) {
+      state.paymentMethod = method;
+      renderCartPanels();
+      if (!document.getElementById('confirm-wa-modal').classList.contains('hidden')) {
+        renderModalPaymentInstruction();
+        document.getElementById('wa-message-preview').textContent = buildWhatsAppMessage();
+      }
+    }
+
     function updateCartItemQuantity(productId, packageId, variant, delta) {
       const product = PRODUCTS.find(p => p.id === productId);
       if (!product || !product.available) return;
@@ -588,14 +679,12 @@
       }
     }
 
-    // Menghitung total kuantitas suatu produk di semua paket/varian (untuk badge kartu)
     function getTotalProductQtyInCart(productId) {
       return Object.values(state.cart)
         .filter(item => item.productId === productId)
         .reduce((sum, item) => sum + item.quantity, 0);
     }
 
-    // Mengambil daftar item aktif di keranjang beserta subtotalnya
     function getCartItems() {
       return Object.values(state.cart)
         .filter(item => item.quantity > 0)
@@ -614,7 +703,7 @@
 
     /**
      * =========================================================================
-     * 5. RENDER TAMPILAN KATALOG PRODUK (DENGAN PAKET HARGA & VARIAN RASA)
+     * 5. RENDER TAMPILAN KATALOG PRODUK
      * =========================================================================
      */
     function renderProducts() {
@@ -635,7 +724,6 @@
         const currentComboQty = state.cart[activeCartKey] ? state.cart[activeCartKey].quantity : 0;
         const totalProductQty = getTotalProductQtyInCart(product.id);
 
-        // Render Pilihan Paket Harga
         const packageSelectorHTML = `
           <div class="mb-3">
             <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Pilih Paket / Ukuran:</p>
@@ -663,7 +751,6 @@
           </div>
         `;
 
-        // Render Pilihan Varian Rasa (jika produk memilikinya, misal Donat Lembut)
         const variantSelectorHTML = (product.variants && product.variants.length > 0) ? `
           <div class="mb-3.5">
             <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Varian Rasa:</p>
@@ -688,7 +775,6 @@
           </div>
         ` : '';
 
-        // Kontrol tombol Tambah ke Pesanan atau +/- untuk kombinasi aktif
         let actionControlHTML = '';
         if (!isAvailable) {
           actionControlHTML = `
@@ -737,7 +823,6 @@
 
         return `
           <article class="group bg-white rounded-3xl border border-cream-200 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col ${!isAvailable ? 'opacity-75' : ''}">
-            <!-- Gambar Produk (Klik untuk detail) -->
             <div onclick="openProductModal('${product.id}')" class="relative aspect-[4/3] bg-cream-100 overflow-hidden cursor-pointer">
               <img 
                 src="${product.image}" 
@@ -746,7 +831,6 @@
                 onerror="handleImageError(this, '${product.fallbackImage}', '${escapeHtml(product.name)}')"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${!isAvailable ? 'grayscale' : ''}"
               />
-              <!-- Badge Status -->
               ${!isAvailable ? `
                 <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-slate-800/85 text-white text-xs font-semibold backdrop-blur-xs">
                   Habis
@@ -757,7 +841,6 @@
                 </span>
               ` : ''}
               
-              <!-- Hint Lihat Detail -->
               <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/10 transition-colors flex items-end justify-end p-3">
                 <span class="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-xs text-slate-700 text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-xs">
                   Lihat Detail
@@ -765,7 +848,6 @@
               </div>
             </div>
 
-            <!-- Informasi Produk -->
             <div class="p-5 flex-1 flex flex-col">
               <div class="flex-1">
                 <h4 
@@ -781,14 +863,10 @@
                   ${product.description}
                 </p>
 
-                <!-- Pemilih Paket Harga -->
                 ${packageSelectorHTML}
-
-                <!-- Pemilih Varian Rasa (Jika Ada) -->
                 ${variantSelectorHTML}
               </div>
 
-              <!-- Tombol Aksi -->
               <div class="pt-3 border-t border-cream-100 mt-auto">
                 ${actionControlHTML}
               </div>
@@ -800,18 +878,133 @@
 
     /**
      * =========================================================================
-     * 6. RENDER PANEL KERANJANG & FORM CHECKOUT (DESKTOP & MOBILE SINKRON)
+     * 6. RENDER PANEL KERANJANG, PEMBAYARAN & FORM CHECKOUT
      * =========================================================================
      */
+    function generatePaymentBoxHTML() {
+      const { totalPrice } = getCartSummary();
+      const isQris = state.paymentMethod === 'qris';
+
+      return `
+        <div class="pt-2">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-display font-bold text-sm text-slate-800">Metode Pembayaran</h4>
+            <span class="text-[11px] font-medium text-sage-600">Bayar sebelum kirim nota</span>
+          </div>
+
+          <!-- Tab Pilihan Metode Bayar -->
+          <div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-cream-100 border border-cream-200 mb-3">
+            <button
+              type="button"
+              onclick="selectPaymentMethod('qris')"
+              class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                isQris
+                  ? 'bg-white text-sage-700 shadow-xs border border-sage-200'
+                  : 'text-slate-500 hover:text-slate-700'
+              }"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+              </svg>
+              <span>Scan Barcode / QR</span>
+            </button>
+            <button
+              type="button"
+              onclick="selectPaymentMethod('dana')"
+              class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                !isQris
+                  ? 'bg-white text-sky-700 shadow-xs border border-sky-200'
+                  : 'text-slate-500 hover:text-slate-700'
+              }"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+              <span>Transfer DANA</span>
+            </button>
+          </div>
+
+          <!-- Konten Detail Pembayaran -->
+          ${isQris ? `
+            <div class="bg-cream-50 border border-cream-200 rounded-2xl p-3.5 text-center">
+              <div 
+                onclick="openQrisModal()"
+                class="relative w-44 h-44 mx-auto bg-white rounded-2xl p-2 border border-sage-200 shadow-2xs cursor-pointer group overflow-hidden"
+                title="Klik untuk memperbesar barcode"
+              >
+                <img 
+                  src="${STORE_CONFIG.payment.qrisImage}" 
+                  alt="Barcode Pembayaran"
+                  onerror="handleImageError(this, '${STORE_CONFIG.payment.qrisFallbackImage}', 'Barcode QRIS')"
+                  class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform"
+                />
+                <span class="absolute bottom-2 inset-x-2 py-1 rounded-lg bg-slate-900/75 text-white text-[10px] font-semibold backdrop-blur-xs">
+                  Klik Perbesar QR
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 mt-2.5">
+                Scan barcode di atas sebesar <span class="font-display font-bold text-sage-700">${formatRupiah(totalPrice)}</span>
+              </p>
+              <div class="mt-2 flex items-center justify-center gap-2">
+                <button
+                  type="button"
+                  onclick="openQrisModal()"
+                  class="px-3 py-1.5 rounded-lg bg-sage-100 hover:bg-sage-200/80 text-sage-800 text-[11px] font-semibold transition"
+                >
+                  Perbesar Barcode
+                </button>
+                <a
+                  href="${STORE_CONFIG.payment.qrisDriveUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-3 py-1.5 rounded-lg bg-white hover:bg-cream-100 text-slate-600 border border-cream-200 text-[11px] font-semibold transition"
+                >
+                  Buka Link Drive
+                </a>
+              </div>
+            </div>
+          ` : `
+            <div class="bg-sky-50/70 border border-sky-200/80 rounded-2xl p-3.5">
+              <div class="flex items-center justify-between gap-2 mb-1.5">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-600 text-white text-[10px] font-bold tracking-wide uppercase">
+                  DANA E-Wallet
+                </span>
+                <span class="text-[11px] text-slate-500">Transfer Nominal Pas</span>
+              </div>
+              <div class="flex items-center justify-between gap-2 bg-white border border-sky-200 rounded-xl px-3 py-2.5 mt-2">
+                <div>
+                  <p class="text-[10px] text-slate-400 font-medium">Nomor Tujuan DANA</p>
+                  <p class="font-mono font-bold text-base text-slate-800 tracking-wide">${STORE_CONFIG.payment.danaNumber}</p>
+                </div>
+                <button
+                  type="button"
+                  onclick="copyDanaNumber()"
+                  class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 shrink-0"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <span>Salin</span>
+                </button>
+              </div>
+              <p class="text-[11px] text-slate-600 mt-2">
+                Transfer sejumlah <span class="font-bold text-slate-800">${formatRupiah(totalPrice)}</span> lalu lampirkan bukti transfer saat kirim WhatsApp.
+              </p>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
     function generateCheckoutHTML(prefix) {
       const { items, totalItems, totalPrice } = getCartSummary();
 
       let cartListHTML = '';
       if (items.length === 0) {
         cartListHTML = `
-          <div class="py-8 px-4 text-center bg-cream-50/70 rounded-2xl border border-dashed border-cream-200">
-            <div class="w-12 h-12 rounded-2xl bg-sage-50 text-sage-500 flex items-center justify-center mx-auto mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <div class="py-7 px-4 text-center bg-cream-50/70 rounded-2xl border border-dashed border-cream-200">
+            <div class="w-11 h-11 rounded-2xl bg-sage-50 text-sage-500 flex items-center justify-center mx-auto mb-2.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
             </div>
@@ -821,7 +1014,7 @@
         `;
       } else {
         cartListHTML = `
-          <div class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar pr-1">
+          <div class="space-y-2.5 max-h-56 overflow-y-auto custom-scrollbar pr-1">
             ${items.map(item => `
               <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-cream-50 border border-cream-200/80">
                 <div class="flex-1 min-w-0">
@@ -842,7 +1035,6 @@
                   <p class="text-xs font-bold text-sage-700 mt-0.5">Subtotal: ${formatRupiah(item.subtotal)}</p>
                 </div>
                 
-                <!-- Kontrol Kuantitas Mini -->
                 <div class="flex items-center gap-1.5 bg-white border border-cream-200 rounded-xl p-1 shrink-0">
                   <button 
                     type="button"
@@ -867,9 +1059,9 @@
       return `
         <div class="p-5 sm:p-6">
           <!-- Header Keranjang -->
-          <div class="flex items-center justify-between pb-4 mb-4 border-b border-cream-200">
+          <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-cream-200">
             <div class="flex items-center gap-2.5">
-              <h3 class="font-display font-bold text-lg text-slate-800">Ringkasan Pesanan</h3>
+              <h3 class="font-display font-bold text-lg text-slate-800">Ringkasan & Checkout</h3>
               <span class="px-2.5 py-0.5 rounded-full bg-sage-100 text-sage-700 text-xs font-bold">
                 ${totalItems} item
               </span>
@@ -884,21 +1076,21 @@
           </div>
 
           <!-- Daftar Item -->
-          <div class="mb-5">
+          <div class="mb-4">
             ${cartListHTML}
           </div>
 
           <!-- Total Keseluruhan -->
-          <div class="flex items-center justify-between py-3.5 px-4 rounded-2xl bg-sage-50 border border-sage-100 mb-5">
-            <span class="text-sm font-medium text-slate-700">Total Pesanan</span>
+          <div class="flex items-center justify-between py-3 px-4 rounded-2xl bg-sage-50 border border-sage-100 mb-4">
+            <span class="text-sm font-medium text-slate-700">Total Bayar</span>
             <span class="font-display font-extrabold text-lg sm:text-xl text-sage-700">
               ${formatRupiah(totalPrice)}
             </span>
           </div>
 
-          <!-- Form Data Pemesan -->
+          <!-- Form Data Pemesan & Pembayaran -->
           <form onsubmit="handleOrderSubmit(event)" class="space-y-3.5" novalidate>
-            <h4 class="font-display font-bold text-sm text-slate-800 pt-1">Data Pemesan</h4>
+            <h4 class="font-display font-bold text-sm text-slate-800">Data Pemesan</h4>
             
             <!-- Nama Pemesan -->
             <div>
@@ -950,7 +1142,10 @@
               >${escapeHtml(state.customer.notes)}</textarea>
             </div>
 
-            <!-- Tombol Utama Pesan via WhatsApp -->
+            <!-- Kotak Metode Pembayaran (QRIS Barcode / Transfer DANA) -->
+            ${generatePaymentBoxHTML()}
+
+            <!-- Tombol Utama Lanjut Bayar & Kirim WhatsApp -->
             <div class="pt-2">
               <button 
                 type="submit"
@@ -959,7 +1154,7 @@
                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
                 </svg>
-                <span>Pesan Sekarang via WhatsApp</span>
+                <span>Bayar & Kirim via WhatsApp</span>
               </button>
             </div>
           </form>
@@ -1040,7 +1235,7 @@
 
     /**
      * =========================================================================
-     * 7. VALIDASI & PENYUSUNAN STRUK PESAN WHATSAPP PROFESIONAL
+     * 7. VALIDASI, MODAL PEMBAYARAN & STRUK PESAN WHATSAPP
      * =========================================================================
      */
     function formatIndonesianOrderTimestamp(date = new Date()) {
@@ -1085,6 +1280,13 @@
       return isValid;
     }
 
+    function getPaymentMethodLabel() {
+      if (state.paymentMethod === 'qris') {
+        return 'Scan Barcode / QRIS';
+      }
+      return `Transfer DANA (${STORE_CONFIG.payment.danaNumber})`;
+    }
+
     function buildWhatsAppMessage() {
       const { items, totalItems, totalPrice } = getCartSummary();
       const nama = state.customer.name.trim();
@@ -1092,6 +1294,7 @@
       const catatanRaw = state.customer.notes.trim();
       const catatanFormatted = catatanRaw ? catatanRaw : "Tidak ada catatan";
       const waktuOrder = formatIndonesianOrderTimestamp();
+      const metodeBayar = getPaymentMethodLabel();
 
       const thickLine = "━━━━━━━━━━━━━━━━━━━━";
       const dashedLine = "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄";
@@ -1112,6 +1315,7 @@
         `Waktu: ${waktuOrder}`,
         `*Pemesan:* ${nama}`,
         `*Alamat:* ${alamat}`,
+        `*Pembayaran:* ${metodeBayar}`,
         thickLine,
         "*RINCIAN PESANAN*",
         "",
@@ -1123,16 +1327,96 @@
         "*Catatan:*",
         `_${catatanFormatted}_`,
         thickLine,
-        "Mohon konfirmasi ketersediaan & total pesanan saya ya kak. Terima kasih!"
+        "Berikut saya lampirkan bukti pembayarannya ya kak. Mohon konfirmasi pesanan saya. Terima kasih!"
       ];
 
       return receiptLines.join("\n");
+    }
+
+    function renderModalPaymentInstruction() {
+      const container = document.getElementById('modal-payment-instruction');
+      if (!container) return;
+
+      const { totalPrice } = getCartSummary();
+      const isQris = state.paymentMethod === 'qris';
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between gap-2 mb-2.5">
+          <span class="text-xs font-bold text-slate-800">Langkah 1: Selesaikan Pembayaran</span>
+          <div class="flex items-center gap-1 bg-white p-0.5 rounded-lg border border-sage-200">
+            <button
+              type="button"
+              onclick="selectPaymentMethod('qris')"
+              class="px-2 py-1 rounded-md text-[11px] font-bold transition ${isQris ? 'bg-sage-600 text-white' : 'text-slate-500 hover:text-slate-700'}"
+            >Barcode</button>
+            <button
+              type="button"
+              onclick="selectPaymentMethod('dana')"
+              class="px-2 py-1 rounded-md text-[11px] font-bold transition ${!isQris ? 'bg-sky-600 text-white' : 'text-slate-500 hover:text-slate-700'}"
+            >DANA</button>
+          </div>
+        </div>
+
+        ${isQris ? `
+          <div class="flex items-center gap-3 bg-white rounded-xl p-2.5 border border-sage-200/80">
+            <img 
+              src="${STORE_CONFIG.payment.qrisImage}" 
+              alt="Barcode QRIS"
+              onclick="openQrisModal()"
+              onerror="handleImageError(this, '${STORE_CONFIG.payment.qrisFallbackImage}', 'Barcode QRIS')"
+              class="w-24 h-24 object-contain rounded-lg border border-cream-200 cursor-pointer shrink-0 bg-cream-50"
+            />
+            <div class="text-left flex-1 min-w-0">
+              <p class="text-[11px] text-slate-500">Nominal Pembayaran:</p>
+              <p class="font-display font-extrabold text-base text-sage-700 mb-1.5">${formatRupiah(totalPrice)}</p>
+              <div class="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onclick="openQrisModal()"
+                  class="px-2.5 py-1 rounded-lg bg-sage-600 hover:bg-sage-700 text-white text-[11px] font-semibold transition"
+                >
+                  Perbesar QR
+                </button>
+                <a
+                  href="${STORE_CONFIG.payment.qrisDriveUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-cream-200 text-slate-700 text-[11px] font-semibold transition"
+                >
+                  Link Barcode
+                </a>
+              </div>
+            </div>
+          </div>
+        ` : `
+          <div class="bg-white rounded-xl p-3 border border-sky-200">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <p class="text-[11px] text-slate-500">Transfer DANA ke nomor:</p>
+                <p class="font-mono font-bold text-base text-slate-800">${STORE_CONFIG.payment.danaNumber}</p>
+                <p class="text-xs font-bold text-sky-700 mt-0.5">Nominal: ${formatRupiah(totalPrice)}</p>
+              </div>
+              <button
+                type="button"
+                onclick="copyDanaNumber()"
+                class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition active:scale-95 shrink-0"
+              >
+                Salin Nomor
+              </button>
+            </div>
+          </div>
+        `}
+        <p class="text-[11px] text-slate-500 mt-2 leading-snug">
+          Langkah 2: Klik <strong>Kirim ke WhatsApp</strong> di bawah lalu lampirkan screenshot bukti pembayaran.
+        </p>
+      `;
     }
 
     function handleOrderSubmit(event) {
       event.preventDefault();
       if (!validateOrder()) return;
 
+      renderModalPaymentInstruction();
       const message = buildWhatsAppMessage();
       document.getElementById('wa-message-preview').textContent = message;
       
@@ -1145,20 +1429,7 @@
     }
 
     function copyReceiptText() {
-      const message = buildWhatsAppMessage();
-      const tempTextArea = document.createElement('textarea');
-      tempTextArea.value = message;
-      tempTextArea.style.position = 'fixed';
-      tempTextArea.style.opacity = '0';
-      document.body.appendChild(tempTextArea);
-      tempTextArea.select();
-      try {
-        document.execCommand('copy');
-        showToast('Struk pesanan berhasil disalin!');
-      } catch (err) {
-        showToast('Gagal menyalin struk.', 'error');
-      }
-      document.body.removeChild(tempTextArea);
+      copyTextToClipboard(buildWhatsAppMessage(), 'Struk pesanan berhasil disalin!');
     }
 
     function proceedToWhatsApp() {
@@ -1172,9 +1443,27 @@
 
     /**
      * =========================================================================
-     * 8. MODAL DETAIL PRODUK (DENGAN PEMILIH PAKET & VARIAN) & DRAWER MOBILE
+     * 8. MODAL ZOOM BARCODE, DETAIL PRODUK & DRAWER MOBILE
      * =========================================================================
      */
+    function openQrisModal() {
+      const { totalPrice } = getCartSummary();
+      const imgEl = document.getElementById('qris-zoom-img');
+      imgEl.dataset.fallbackStage = "0";
+      imgEl.onerror = function() {
+        handleImageError(this, STORE_CONFIG.payment.qrisFallbackImage, 'Barcode Pembayaran QRIS');
+      };
+      imgEl.src = STORE_CONFIG.payment.qrisImage;
+
+      document.getElementById('qris-modal-total').textContent = formatRupiah(totalPrice);
+      document.getElementById('qris-drive-link').href = STORE_CONFIG.payment.qrisDriveUrl;
+      document.getElementById('qris-zoom-modal').classList.remove('hidden');
+    }
+
+    function closeQrisModal() {
+      document.getElementById('qris-zoom-modal').classList.add('hidden');
+    }
+
     function openProductModal(productId) {
       const product = PRODUCTS.find(p => p.id === productId);
       if (!product) return;
@@ -1219,7 +1508,6 @@
           <p class="font-display font-extrabold text-xl text-sage-600 mb-3">${formatRupiah(activePackage.price)}</p>
           <p class="text-sm text-slate-600 leading-relaxed mb-5">${product.description}</p>
           
-          <!-- Pilihan Paket di Modal -->
           <div class="mb-4">
             <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Pilih Paket / Ukuran:</p>
             <div class="space-y-2">
@@ -1243,7 +1531,6 @@
             </div>
           </div>
 
-          <!-- Pilihan Varian Rasa di Modal -->
           ${(product.variants && product.variants.length > 0) ? `
             <div class="mb-5">
               <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Varian Rasa:</p>
@@ -1268,7 +1555,6 @@
             </div>
           ` : ''}
 
-          <!-- Tombol Aksi Modal -->
           ${product.available ? (
             currentComboQty === 0 ? `
               <button 
