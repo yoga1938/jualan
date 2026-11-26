@@ -47,7 +47,6 @@
   </script>
 
   <style>
-    /* Smooth scrolling & custom scrollbar */
     html {
       scroll-behavior: smooth;
     }
@@ -57,7 +56,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Custom Scrollbar untuk area keranjang */
     .custom-scrollbar::-webkit-scrollbar {
       width: 5px;
     }
@@ -73,7 +71,6 @@
       background: #4A8B6F;
     }
 
-    /* Animasi mikro untuk interaksi tombol dan modal */
     @keyframes popIn {
       0% { transform: scale(0.95); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
@@ -96,10 +93,8 @@
   <!-- ==================== HEADER / NAVBAR ==================== -->
   <header class="sticky top-0 z-30 bg-cream-50/90 backdrop-blur-md border-b border-cream-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-      <!-- Identitas Brand -->
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-2xl bg-sage-600 text-white flex items-center justify-center shadow-soft shrink-0">
-          <!-- Ikon Daun / Self Reward -->
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
             <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
@@ -115,7 +110,7 @@
         </div>
       </div>
 
-      <!-- Tombol Keranjang Desktop & Mobile -->
+      <!-- Tombol Keranjang Mobile -->
       <button 
         onclick="openMobileCart()" 
         class="lg:hidden relative p-2.5 rounded-xl bg-white border border-cream-200 text-slate-700 hover:bg-sage-50 hover:border-sage-200 transition active:scale-95 shadow-soft"
@@ -129,10 +124,10 @@
         </span>
       </button>
 
-      <!-- Info Singkat di Desktop -->
+      <!-- Info Singkat Desktop -->
       <div class="hidden lg:flex items-center gap-2 text-sm text-slate-600 bg-cream-100/80 px-4 py-2 rounded-full border border-cream-200">
         <span class="w-2 h-2 rounded-full bg-sage-500 animate-pulse"></span>
-        <span>Pesan mudah, bayar praktis & langsung ke WhatsApp</span>
+        <span>Pesan mudah, bayar & upload bukti transfer langsung ke WhatsApp</span>
       </div>
     </div>
   </header>
@@ -148,7 +143,7 @@
           Saatnya beri hadiah kecil untuk dirimu sendiri ✨
         </h2>
         <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
-          Pilih produk favoritmu di bawah ini, lakukan pembayaran via QRIS atau DANA saat checkout, lalu kirim struk pesanan langsung ke WhatsApp kami.
+          Pilih produk favoritmu di bawah ini, bayar via QRIS (bisa unduh barcode) atau DANA, unggah bukti transfer, lalu kirim ke WhatsApp kami.
         </p>
       </div>
       <div class="hidden md:flex flex-col items-end shrink-0 text-right">
@@ -162,7 +157,7 @@
   <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 pb-28 lg:pb-12 flex-1">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-      <!-- KOLOM KIRI: DAFTAR KATALOG PRODUK (7 Kolom di Desktop) -->
+      <!-- KOLOM KIRI: DAFTAR KATALOG PRODUK -->
       <div class="lg:col-span-7 xl:col-span-8">
         <div class="flex items-center justify-between mb-4">
           <h3 class="font-display font-bold text-lg sm:text-xl text-slate-800">
@@ -173,16 +168,15 @@
           </span>
         </div>
 
-        <!-- Grid Kartu Produk -->
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-          <!-- Kartu produk akan dirender otomatis melalui JavaScript -->
+          <!-- Dirender melalui JS -->
         </div>
       </div>
 
-      <!-- KOLOM KANAN: PANEL RINGKASAN PESANAN & CHECKOUT STICKY (Desktop) -->
+      <!-- KOLOM KANAN: PANEL RINGKASAN & CHECKOUT STICKY (Desktop) -->
       <aside class="hidden lg:block lg:col-span-5 xl:col-span-4 sticky top-24">
         <div id="desktop-checkout-container" class="bg-white rounded-3xl border border-cream-200 shadow-soft-lg overflow-hidden">
-          <!-- Isi panel keranjang & form dirender melalui JavaScript agar sinkron dengan mobile -->
+          <!-- Dirender melalui JS -->
         </div>
       </aside>
 
@@ -197,7 +191,7 @@
     </div>
   </footer>
 
-  <!-- ==================== FLOATING BOTTOM BAR (KHUSUS MOBILE) ==================== -->
+  <!-- ==================== FLOATING BOTTOM BAR (MOBILE) ==================== -->
   <div id="mobile-floating-bar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 p-3 bg-gradient-to-t from-cream-50 via-cream-50/95 to-transparent pointer-events-none">
     <button 
       onclick="openMobileCart()" 
@@ -228,44 +222,32 @@
 
   <!-- ==================== DRAWER / MODAL KERANJANG MOBILE ==================== -->
   <div id="mobile-cart-modal" class="fixed inset-0 z-50 hidden lg:hidden">
-    <!-- Backdrop -->
     <div onclick="closeMobileCart()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"></div>
-    
-    <!-- Bottom Sheet Drawer -->
     <div class="fixed inset-x-0 bottom-0 max-h-[92vh] bg-white rounded-t-3xl shadow-2xl flex flex-col animate-slide-up overflow-hidden">
-      <!-- Handle bar -->
       <div class="pt-3 pb-1 flex justify-center shrink-0" onclick="closeMobileCart()">
         <div class="w-12 h-1.5 rounded-full bg-slate-200"></div>
       </div>
-      
-      <!-- Container Konten Keranjang Mobile -->
       <div id="mobile-checkout-container" class="flex-1 overflow-y-auto custom-scrollbar">
-        <!-- Diisi otomatis oleh JavaScript -->
+        <!-- Dirender melalui JS -->
       </div>
     </div>
   </div>
 
-  <!-- ==================== MODAL DETAIL PRODUK (QUICK PREVIEW) ==================== -->
+  <!-- ==================== MODAL DETAIL PRODUK ==================== -->
   <div id="product-detail-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-    <!-- Backdrop -->
     <div onclick="closeProductModal()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
-    
-    <!-- Modal Content -->
     <div id="product-detail-content" class="relative bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-pop z-10 border border-cream-200">
-      <!-- Diisi otomatis oleh JavaScript -->
+      <!-- Dirender melalui JS -->
     </div>
   </div>
 
-  <!-- ==================== MODAL ZOOM BARCODE QRIS ==================== -->
+  <!-- ==================== MODAL ZOOM & UNDUH BARCODE QRIS ==================== -->
   <div id="qris-zoom-modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
-    <!-- Backdrop -->
     <div onclick="closeQrisModal()" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs transition-opacity"></div>
-    
-    <!-- Modal Content -->
     <div class="relative bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl animate-pop z-10 border border-cream-200 text-center">
       <div class="flex items-center justify-between mb-3">
         <div class="text-left">
-          <h4 class="font-display font-bold text-base text-slate-800">Scan Barcode Pembayaran</h4>
+          <h4 class="font-display font-bold text-base text-slate-800">Barcode Pembayaran QRIS</h4>
           <p class="text-xs text-slate-500">Total bayar: <span id="qris-modal-total" class="font-bold text-sage-700">Rp0</span></p>
         </div>
         <button 
@@ -280,53 +262,64 @@
         </button>
       </div>
 
-      <div class="bg-cream-50 p-3 rounded-2xl border border-cream-200 mb-3">
+      <div class="bg-cream-50 p-3 rounded-2xl border border-cream-200 mb-3.5">
         <img 
           id="qris-zoom-img"
           src="" 
           alt="Barcode Pembayaran QRIS" 
-          class="w-full max-h-[60vh] object-contain rounded-xl mx-auto"
+          class="w-full max-h-[55vh] object-contain rounded-xl mx-auto"
         />
       </div>
 
-      <div class="flex items-center justify-center gap-2">
-        <a 
-          id="qris-drive-link"
-          href="#" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="flex-1 py-2.5 px-3 rounded-xl bg-sage-50 hover:bg-sage-100 text-sage-700 font-semibold text-xs border border-sage-200 transition"
-        >
-          Buka di Google Drive
-        </a>
+      <div class="flex flex-col gap-2">
         <button 
           type="button"
-          onclick="closeQrisModal()" 
-          class="py-2.5 px-5 rounded-xl bg-sage-600 hover:bg-sage-700 text-white font-semibold text-xs transition"
+          onclick="downloadQrisBarcode()" 
+          class="w-full py-2.5 px-4 rounded-xl bg-sage-600 hover:bg-sage-700 text-white font-display font-bold text-xs flex items-center justify-center gap-2 shadow-soft transition active:scale-95"
         >
-          Selesai
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span>Unduh Gambar QR Barcode</span>
         </button>
+
+        <div class="flex items-center gap-2">
+          <a 
+            id="qris-drive-link"
+            href="#" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="flex-1 py-2 px-3 rounded-xl bg-cream-100 hover:bg-cream-200 text-slate-700 font-semibold text-xs border border-cream-200 transition"
+          >
+            Buka di Google Drive
+          </a>
+          <button 
+            type="button"
+            onclick="closeQrisModal()" 
+            class="py-2 px-4 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold text-xs transition"
+          >
+            Tutup
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== MODAL KONFIRMASI & PEMBAYARAN SEBELUM KE WHATSAPP ==================== -->
+  <!-- ==================== MODAL KONFIRMASI, BUKTI TRANSFER & KIRIM WHATSAPP ==================== -->
   <div id="confirm-wa-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-    <!-- Backdrop -->
     <div onclick="closeConfirmModal()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
     
-    <!-- Modal Content: Pembayaran + Struk Digital Modern -->
     <div class="relative bg-white w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl animate-pop z-10 border border-cream-200 flex flex-col max-h-[92vh]">
       <div class="flex items-center justify-between gap-3 mb-3.5 shrink-0">
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-2xl bg-sage-100 text-sage-700 flex items-center justify-center shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
           <div>
-            <h4 class="font-display font-bold text-lg text-slate-800 leading-tight">Pembayaran & Struk</h4>
-            <p class="text-xs text-slate-500">Selesaikan pembayaran lalu kirim ke WhatsApp</p>
+            <h4 class="font-display font-bold text-lg text-slate-800 leading-tight">Konfirmasi & Bukti Bayar</h4>
+            <p class="text-xs text-slate-500">Siap dikirim beserta bukti transfer ke penjual</p>
           </div>
         </div>
         <button 
@@ -341,33 +334,43 @@
         </button>
       </div>
 
-      <!-- Area Scrollable: Panduan Pembayaran + Kertas Struk -->
+      <!-- Area Scrollable: Pratinjau Bukti Transfer + Struk Digital -->
       <div class="overflow-y-auto custom-scrollbar space-y-3.5 mb-4 pr-0.5">
         
-        <!-- Kartu Instruksi Pembayaran -->
-        <div id="modal-payment-instruction" class="bg-sage-50/90 border border-sage-200 rounded-2xl p-3.5">
-          <!-- Diisi otomatis sesuai pilihan metode pembayaran user -->
+        <!-- Pratinjau Bukti Transfer Terlampir -->
+        <div id="modal-proof-preview" class="bg-sage-50 border border-sage-200 rounded-2xl p-3.5">
+          <!-- Diisi otomatis dari bukti transfer yang diunggah user -->
         </div>
 
         <!-- Kertas Struk Digital -->
         <div class="relative bg-cream-50 border-2 border-dashed border-sage-200 rounded-2xl p-4 shadow-inner">
           <div class="flex items-center justify-between text-[10px] font-semibold uppercase tracking-widest text-sage-600 mb-2 pb-2 border-b border-dashed border-cream-200">
             <span>Nota Digital WhatsApp</span>
-            <span class="bg-sage-100 text-sage-700 px-2 py-0.5 rounded-full">Format Terverifikasi</span>
+            <span class="bg-sage-100 text-sage-700 px-2 py-0.5 rounded-full">Bukti TF Terlampir</span>
           </div>
           <pre id="wa-message-preview" class="text-[12px] sm:text-[12.5px] text-slate-800 whitespace-pre-wrap font-mono leading-relaxed tracking-tight select-all"></pre>
         </div>
 
       </div>
 
-      <!-- Tombol Salin Struk (Praktis) -->
-      <div class="mb-2.5 shrink-0">
+      <!-- Tombol Utilitas: Salin Foto Bukti TF & Salin Teks Struk -->
+      <div class="grid grid-cols-2 gap-2 mb-2.5 shrink-0">
+        <button 
+          type="button"
+          onclick="copyProofImageToClipboard()" 
+          class="py-2.5 px-3 rounded-xl bg-sage-50 hover:bg-sage-100 text-sage-800 font-semibold text-xs flex items-center justify-center gap-1.5 transition active:scale-[0.99] border border-sage-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-sage-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>Salin Foto Bukti TF</span>
+        </button>
         <button 
           type="button"
           onclick="copyReceiptText()" 
-          class="w-full py-2.5 px-4 rounded-xl bg-cream-100 hover:bg-cream-200/80 text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition active:scale-[0.99] border border-cream-200"
+          class="py-2.5 px-3 rounded-xl bg-cream-100 hover:bg-cream-200/80 text-slate-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition active:scale-[0.99] border border-cream-200"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-sage-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
           <span>Salin Teks Struk</span>
@@ -381,17 +384,17 @@
           onclick="closeConfirmModal()" 
           class="py-3 px-4 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs sm:text-sm hover:bg-slate-50 transition"
         >
-          Edit Data
+          Edit
         </button>
         <button 
           type="button"
-          onclick="proceedToWhatsApp()" 
+          onclick="sendOrderAndProofToWhatsApp()" 
           class="flex-1 py-3 px-4 rounded-xl bg-sage-600 hover:bg-sage-700 text-white font-display font-bold text-xs sm:text-sm shadow-soft flex items-center justify-center gap-2 transition active:scale-95"
         >
           <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
             <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
           </svg>
-          <span>Kirim ke WhatsApp</span>
+          <span>Kirim Pesanan & Bukti ke WA</span>
         </button>
       </div>
     </div>
@@ -407,7 +410,7 @@
   <script>
     /**
      * =========================================================================
-     * 1. KONFIGURASI TOKO, PEMBAYARAN & DAFTAR PRODUK (MUDAH DIEDIT)
+     * 1. KONFIGURASI TOKO, PEMBAYARAN & DAFTAR PRODUK
      * =========================================================================
      */
     const STORE_CONFIG = {
@@ -417,6 +420,7 @@
       payment: {
         qrisDriveId: "116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK",
         qrisDriveUrl: "https://drive.google.com/file/d/116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK/view?usp=sharing",
+        qrisDirectDownloadUrl: "https://drive.google.com/uc?export=download&id=116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK",
         qrisImage: "https://drive.google.com/thumbnail?id=116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK&sz=w1000",
         qrisFallbackImage: "https://lh3.googleusercontent.com/d/116dNkhXadU4YTd5Gt2dzzVzBPi07VPXK",
         danaNumber: "085658987525"
@@ -498,13 +502,19 @@
 
     /**
      * =========================================================================
-     * 2. STATE APLIKASI (KERANJANG, PILIHAN AKTIF, PEMBAYARAN & FORM PEMESAN)
+     * 2. STATE APLIKASI
      * =========================================================================
      */
     const state = {
       selectedOptions: {},
       cart: {},
       paymentMethod: "qris", // "qris" atau "dana"
+      paymentProof: {
+        file: null,
+        dataUrl: "",
+        fileName: "",
+        fileSizeLabel: ""
+      },
       customer: {
         name: "",
         address: "",
@@ -512,7 +522,8 @@
       },
       errors: {
         name: "",
-        address: ""
+        address: "",
+        proof: ""
       },
       activeModalProductId: null
     };
@@ -530,7 +541,7 @@
 
     /**
      * =========================================================================
-     * 3. FUNGSI PEMBANTU (FORMATTER, FALLBACK GAMBAR, COPY & NOTIFIKASI)
+     * 3. FUNGSI PEMBANTU (FORMATTER, UNDUH QR, UPLOAD BUKTI TF & CLIPBOARD)
      * =========================================================================
      */
     function formatNumberID(amount) {
@@ -539,6 +550,12 @@
 
     function formatRupiah(amount) {
       return `Rp${formatNumberID(amount)}`;
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
     }
 
     function handleImageError(imgEl, fallbackUrl, productName) {
@@ -550,6 +567,123 @@
         imgEl.onerror = null;
         const encodedTitle = encodeURIComponent(productName);
         imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450"><rect width="600" height="450" fill="%23EFE8DA"/><circle cx="300" cy="195" r="54" fill="%23E1EDE6"/><path d="M282 195h36M300 177v36" stroke="%234A8B6F" stroke-width="6" stroke-linecap="round"/><text x="300" y="285" font-family="sans-serif" font-size="20" font-weight="bold" fill="%232D5C48" text-anchor="middle">${encodedTitle}</text></svg>`;
+      }
+    }
+
+    // Fungsi Unduh QR Barcode (Mencoba direct blob download, lalu fallback ke link download Drive)
+    async function downloadQrisBarcode() {
+      showToast('Menyiapkan unduhan QR Barcode...');
+      const candidates = [
+        STORE_CONFIG.payment.qrisFallbackImage,
+        STORE_CONFIG.payment.qrisImage
+      ];
+
+      for (const url of candidates) {
+        try {
+          const response = await fetch(url, { mode: 'cors' });
+          if (!response.ok) continue;
+          const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.download = 'QR-Barcode-yukkk-apresiasi-diri.jpg';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+          showToast('QR Barcode berhasil diunduh!');
+          return;
+        } catch (err) {
+          // Lanjut ke kandidat berikutnya / fallback Drive download
+        }
+      }
+
+      // Fallback langsung ke tautan download Google Drive
+      const fallbackLink = document.createElement('a');
+      fallbackLink.href = STORE_CONFIG.payment.qrisDirectDownloadUrl;
+      fallbackLink.target = '_blank';
+      fallbackLink.rel = 'noopener noreferrer';
+      document.body.appendChild(fallbackLink);
+      fallbackLink.click();
+      document.body.removeChild(fallbackLink);
+      showToast('Membuka unduhan QR Barcode...');
+    }
+
+    // Fungsi Handle Upload Bukti Transfer
+    function handleProofUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showToast('File harus berupa gambar (JPG/PNG/WEBP).', 'error');
+        event.target.value = '';
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('Ukuran gambar maksimal 10 MB.', 'error');
+        event.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        state.paymentProof = {
+          file: file,
+          dataUrl: e.target.result,
+          fileName: file.name,
+          fileSizeLabel: formatFileSize(file.size)
+        };
+        state.errors.proof = '';
+        renderCartPanels();
+        showToast('Bukti transfer berhasil diunggah!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeProofImage() {
+      state.paymentProof = {
+        file: null,
+        dataUrl: "",
+        fileName: "",
+        fileSizeLabel: ""
+      };
+      renderCartPanels();
+      showToast('Bukti transfer dihapus.');
+    }
+
+    // Salin gambar bukti transfer ke clipboard (memudahkan tempel/paste di WhatsApp Desktop/Web)
+    async function copyProofImageToClipboard() {
+      if (!state.paymentProof.dataUrl) {
+        showToast('Belum ada foto bukti transfer.', 'error');
+        return;
+      }
+
+      try {
+        if (!navigator.clipboard || !window.ClipboardItem) {
+          throw new Error('Clipboard image not supported');
+        }
+
+        const img = new Image();
+        img.src = state.paymentProof.dataUrl;
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': pngBlob })
+        ]);
+        showToast('Foto bukti TF disalin! Tinggal Ctrl+V / Tempel di chat WA.');
+      } catch (err) {
+        showToast('Browser tidak mendukung salin foto langsung. Lampirkan dari galeri saat di WA ya.', 'error');
       }
     }
 
@@ -595,7 +729,7 @@
         toast.style.transform = 'translateY(-6px)';
         toast.style.transition = 'all 0.25s ease';
         setTimeout(() => toast.remove(), 250);
-      }, 2200);
+      }, 2500);
     }
 
     /**
@@ -628,10 +762,6 @@
     function selectPaymentMethod(method) {
       state.paymentMethod = method;
       renderCartPanels();
-      if (!document.getElementById('confirm-wa-modal').classList.contains('hidden')) {
-        renderModalPaymentInstruction();
-        document.getElementById('wa-message-preview').textContent = buildWhatsAppMessage();
-      }
     }
 
     function updateCartItemQuantity(productId, packageId, variant, delta) {
@@ -878,120 +1008,204 @@
 
     /**
      * =========================================================================
-     * 6. RENDER PANEL KERANJANG, PEMBAYARAN & FORM CHECKOUT
+     * 6. RENDER PANEL KERANJANG, PEMBAYARAN, UNDUH QR & UPLOAD BUKTI TRANSFER
      * =========================================================================
      */
-    function generatePaymentBoxHTML() {
+    function generatePaymentAndProofHTML(prefix) {
       const { totalPrice } = getCartSummary();
       const isQris = state.paymentMethod === 'qris';
+      const hasProof = Boolean(state.paymentProof.dataUrl);
 
       return `
-        <div class="pt-2">
-          <div class="flex items-center justify-between mb-2">
-            <h4 class="font-display font-bold text-sm text-slate-800">Metode Pembayaran</h4>
-            <span class="text-[11px] font-medium text-sage-600">Bayar sebelum kirim nota</span>
-          </div>
+        <div class="pt-2 space-y-3.5">
+          <!-- Bagian 1: Pilih Metode Pembayaran & Unduh QR -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-display font-bold text-sm text-slate-800">1. Metode Pembayaran</h4>
+              <span class="text-[11px] font-semibold text-sage-700">${formatRupiah(totalPrice)}</span>
+            </div>
 
-          <!-- Tab Pilihan Metode Bayar -->
-          <div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-cream-100 border border-cream-200 mb-3">
-            <button
-              type="button"
-              onclick="selectPaymentMethod('qris')"
-              class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
-                isQris
-                  ? 'bg-white text-sage-700 shadow-xs border border-sage-200'
-                  : 'text-slate-500 hover:text-slate-700'
-              }"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-              </svg>
-              <span>Scan Barcode / QR</span>
-            </button>
-            <button
-              type="button"
-              onclick="selectPaymentMethod('dana')"
-              class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
-                !isQris
-                  ? 'bg-white text-sky-700 shadow-xs border border-sky-200'
-                  : 'text-slate-500 hover:text-slate-700'
-              }"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              </svg>
-              <span>Transfer DANA</span>
-            </button>
-          </div>
-
-          <!-- Konten Detail Pembayaran -->
-          ${isQris ? `
-            <div class="bg-cream-50 border border-cream-200 rounded-2xl p-3.5 text-center">
-              <div 
-                onclick="openQrisModal()"
-                class="relative w-44 h-44 mx-auto bg-white rounded-2xl p-2 border border-sage-200 shadow-2xs cursor-pointer group overflow-hidden"
-                title="Klik untuk memperbesar barcode"
+            <div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-cream-100 border border-cream-200 mb-3">
+              <button
+                type="button"
+                onclick="selectPaymentMethod('qris')"
+                class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                  isQris
+                    ? 'bg-white text-sage-700 shadow-xs border border-sage-200'
+                    : 'text-slate-500 hover:text-slate-700'
+                }"
               >
-                <img 
-                  src="${STORE_CONFIG.payment.qrisImage}" 
-                  alt="Barcode Pembayaran"
-                  onerror="handleImageError(this, '${STORE_CONFIG.payment.qrisFallbackImage}', 'Barcode QRIS')"
-                  class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform"
-                />
-                <span class="absolute bottom-2 inset-x-2 py-1 rounded-lg bg-slate-900/75 text-white text-[10px] font-semibold backdrop-blur-xs">
-                  Klik Perbesar QR
-                </span>
-              </div>
-              <p class="text-xs text-slate-600 mt-2.5">
-                Scan barcode di atas sebesar <span class="font-display font-bold text-sage-700">${formatRupiah(totalPrice)}</span>
-              </p>
-              <div class="mt-2 flex items-center justify-center gap-2">
-                <button
-                  type="button"
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                </svg>
+                <span>QR Barcode</span>
+              </button>
+              <button
+                type="button"
+                onclick="selectPaymentMethod('dana')"
+                class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                  !isQris
+                    ? 'bg-white text-sky-700 shadow-xs border border-sky-200'
+                    : 'text-slate-500 hover:text-slate-700'
+                }"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                <span>Transfer DANA</span>
+              </button>
+            </div>
+
+            ${isQris ? `
+              <div class="bg-cream-50 border border-cream-200 rounded-2xl p-3.5 text-center">
+                <div 
                   onclick="openQrisModal()"
-                  class="px-3 py-1.5 rounded-lg bg-sage-100 hover:bg-sage-200/80 text-sage-800 text-[11px] font-semibold transition"
+                  class="relative w-44 h-44 mx-auto bg-white rounded-2xl p-2 border border-sage-200 shadow-2xs cursor-pointer group overflow-hidden"
+                  title="Klik untuk memperbesar barcode"
                 >
-                  Perbesar Barcode
-                </button>
-                <a
-                  href="${STORE_CONFIG.payment.qrisDriveUrl}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="px-3 py-1.5 rounded-lg bg-white hover:bg-cream-100 text-slate-600 border border-cream-200 text-[11px] font-semibold transition"
-                >
-                  Buka Link Drive
-                </a>
-              </div>
-            </div>
-          ` : `
-            <div class="bg-sky-50/70 border border-sky-200/80 rounded-2xl p-3.5">
-              <div class="flex items-center justify-between gap-2 mb-1.5">
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-600 text-white text-[10px] font-bold tracking-wide uppercase">
-                  DANA E-Wallet
-                </span>
-                <span class="text-[11px] text-slate-500">Transfer Nominal Pas</span>
-              </div>
-              <div class="flex items-center justify-between gap-2 bg-white border border-sky-200 rounded-xl px-3 py-2.5 mt-2">
-                <div>
-                  <p class="text-[10px] text-slate-400 font-medium">Nomor Tujuan DANA</p>
-                  <p class="font-mono font-bold text-base text-slate-800 tracking-wide">${STORE_CONFIG.payment.danaNumber}</p>
+                  <img 
+                    src="${STORE_CONFIG.payment.qrisImage}" 
+                    alt="Barcode Pembayaran"
+                    onerror="handleImageError(this, '${STORE_CONFIG.payment.qrisFallbackImage}', 'Barcode QRIS')"
+                    class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform"
+                  />
+                  <span class="absolute bottom-2 inset-x-2 py-1 rounded-lg bg-slate-900/75 text-white text-[10px] font-semibold backdrop-blur-xs">
+                    Klik Perbesar QR
+                  </span>
                 </div>
-                <button
-                  type="button"
-                  onclick="copyDanaNumber()"
-                  class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 shrink-0"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                  <span>Salin</span>
-                </button>
+
+                <p class="text-xs text-slate-600 mt-2.5">
+                  Scan / unduh QR di atas & bayar <span class="font-display font-bold text-sage-700">${formatRupiah(totalPrice)}</span>
+                </p>
+
+                <!-- Tombol Unduh QR & Perbesar -->
+                <div class="mt-2.5 grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onclick="downloadQrisBarcode()"
+                    class="py-2 px-3 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-2xs transition active:scale-95"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span>Unduh QR</span>
+                  </button>
+                  <button
+                    type="button"
+                    onclick="openQrisModal()"
+                    class="py-2 px-3 rounded-xl bg-white hover:bg-sage-50 text-sage-700 border border-sage-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                    </svg>
+                    <span>Perbesar</span>
+                  </button>
+                </div>
               </div>
-              <p class="text-[11px] text-slate-600 mt-2">
-                Transfer sejumlah <span class="font-bold text-slate-800">${formatRupiah(totalPrice)}</span> lalu lampirkan bukti transfer saat kirim WhatsApp.
-              </p>
+            ` : `
+              <div class="bg-sky-50/70 border border-sky-200/80 rounded-2xl p-3.5">
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-600 text-white text-[10px] font-bold tracking-wide uppercase">
+                    DANA E-Wallet
+                  </span>
+                  <span class="text-[11px] text-slate-500">Transfer Nominal Pas</span>
+                </div>
+                <div class="flex items-center justify-between gap-2 bg-white border border-sky-200 rounded-xl px-3 py-2.5 mt-2">
+                  <div>
+                    <p class="text-[10px] text-slate-400 font-medium">Nomor Tujuan DANA</p>
+                    <p class="font-mono font-bold text-base text-slate-800 tracking-wide">${STORE_CONFIG.payment.danaNumber}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onclick="copyDanaNumber()"
+                    class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 shrink-0"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Salin</span>
+                  </button>
+                </div>
+                <p class="text-[11px] text-slate-600 mt-2">
+                  Transfer sejumlah <span class="font-bold text-slate-800">${formatRupiah(totalPrice)}</span> ke nomor DANA di atas.
+                </p>
+              </div>
+            `}
+          </div>
+
+          <!-- Bagian 2: Upload Bukti Transfer (Wajib) -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="${prefix}-proof-input" class="block text-xs font-bold text-slate-800">
+                2. Upload Bukti Transfer <span class="text-rose-500">*</span>
+              </label>
+              <span class="text-[11px] text-slate-400">JPG / PNG / Screenshot</span>
             </div>
-          `}
+
+            <input 
+              type="file" 
+              id="${prefix}-proof-input" 
+              accept="image/*" 
+              onchange="handleProofUpload(event)"
+              class="hidden"
+            />
+
+            ${!hasProof ? `
+              <label 
+                for="${prefix}-proof-input"
+                class="flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-dashed ${
+                  state.errors.proof 
+                    ? 'border-rose-400 bg-rose-50/50 text-rose-700' 
+                    : 'border-sage-300 bg-sage-50/40 hover:bg-sage-50 text-slate-600'
+                } cursor-pointer transition text-center"
+              >
+                <div class="w-9 h-9 rounded-xl bg-white border border-sage-200 text-sage-600 flex items-center justify-center mb-1.5 shadow-2xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                </div>
+                <span class="text-xs font-bold text-sage-800">Pilih Foto / Screenshot Bukti Bayar</span>
+                <span class="text-[11px] text-slate-500 mt-0.5">Wajib diunggah sebelum mengirim ke WhatsApp</span>
+              </label>
+            ` : `
+              <div class="p-2.5 rounded-2xl bg-sage-50 border border-sage-200 flex items-center gap-3">
+                <img 
+                  src="${state.paymentProof.dataUrl}" 
+                  alt="Pratinjau Bukti Transfer" 
+                  class="w-14 h-14 rounded-xl object-cover border border-sage-200 shrink-0 bg-white"
+                />
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-1 text-sage-700 text-xs font-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Bukti TF Siap Dikirim</span>
+                  </div>
+                  <p class="text-[11px] text-slate-600 truncate mt-0.5">${escapeHtml(state.paymentProof.fileName)}</p>
+                  <p class="text-[10px] text-slate-400">${state.paymentProof.fileSizeLabel}</p>
+                </div>
+                <div class="flex flex-col gap-1 shrink-0">
+                  <label 
+                    for="${prefix}-proof-input"
+                    class="px-2.5 py-1 rounded-lg bg-white hover:bg-cream-100 text-slate-700 border border-cream-200 text-[11px] font-semibold cursor-pointer text-center transition"
+                  >
+                    Ganti
+                  </label>
+                  <button
+                    type="button"
+                    onclick="removeProofImage()"
+                    class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-semibold transition"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            `}
+
+            ${state.errors.proof ? `
+              <p class="text-[11px] text-rose-500 font-medium mt-1">${state.errors.proof}</p>
+            ` : ''}
+          </div>
         </div>
       `;
     }
@@ -1014,7 +1228,7 @@
         `;
       } else {
         cartListHTML = `
-          <div class="space-y-2.5 max-h-56 overflow-y-auto custom-scrollbar pr-1">
+          <div class="space-y-2.5 max-h-52 overflow-y-auto custom-scrollbar pr-1">
             ${items.map(item => `
               <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-cream-50 border border-cream-200/80">
                 <div class="flex-1 min-w-0">
@@ -1058,7 +1272,6 @@
 
       return `
         <div class="p-5 sm:p-6">
-          <!-- Header Keranjang -->
           <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-cream-200">
             <div class="flex items-center gap-2.5">
               <h3 class="font-display font-bold text-lg text-slate-800">Ringkasan & Checkout</h3>
@@ -1075,12 +1288,10 @@
             ` : ''}
           </div>
 
-          <!-- Daftar Item -->
           <div class="mb-4">
             ${cartListHTML}
           </div>
 
-          <!-- Total Keseluruhan -->
           <div class="flex items-center justify-between py-3 px-4 rounded-2xl bg-sage-50 border border-sage-100 mb-4">
             <span class="text-sm font-medium text-slate-700">Total Bayar</span>
             <span class="font-display font-extrabold text-lg sm:text-xl text-sage-700">
@@ -1088,11 +1299,9 @@
             </span>
           </div>
 
-          <!-- Form Data Pemesan & Pembayaran -->
           <form onsubmit="handleOrderSubmit(event)" class="space-y-3.5" novalidate>
             <h4 class="font-display font-bold text-sm text-slate-800">Data Pemesan</h4>
             
-            <!-- Nama Pemesan -->
             <div>
               <label for="${prefix}-customer-name" class="block text-xs font-semibold text-slate-700 mb-1">
                 Nama Lengkap <span class="text-rose-500">*</span>
@@ -1110,7 +1319,6 @@
               </p>
             </div>
 
-            <!-- Alamat Singkat -->
             <div>
               <label for="${prefix}-customer-address" class="block text-xs font-semibold text-slate-700 mb-1">
                 Alamat Singkat / Lokasi Pengantaran <span class="text-rose-500">*</span>
@@ -1128,7 +1336,6 @@
               </p>
             </div>
 
-            <!-- Catatan Pesanan (Opsional) -->
             <div>
               <label for="${prefix}-customer-notes" class="block text-xs font-semibold text-slate-700 mb-1">
                 Catatan Pesanan <span class="text-slate-400 font-normal">(Opsional)</span>
@@ -1142,10 +1349,9 @@
               >${escapeHtml(state.customer.notes)}</textarea>
             </div>
 
-            <!-- Kotak Metode Pembayaran (QRIS Barcode / Transfer DANA) -->
-            ${generatePaymentBoxHTML()}
+            <!-- Metode Pembayaran + Unduh QR + Upload Bukti Transfer -->
+            ${generatePaymentAndProofHTML(prefix)}
 
-            <!-- Tombol Utama Lanjut Bayar & Kirim WhatsApp -->
             <div class="pt-2">
               <button 
                 type="submit"
@@ -1154,7 +1360,7 @@
                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
                 </svg>
-                <span>Bayar & Kirim via WhatsApp</span>
+                <span>Kirim Pesanan & Bukti ke WA</span>
               </button>
             </div>
           </form>
@@ -1235,7 +1441,7 @@
 
     /**
      * =========================================================================
-     * 7. VALIDASI, MODAL PEMBAYARAN & STRUK PESAN WHATSAPP
+     * 7. VALIDASI, MODAL KONFIRMASI & PENGIRIMAN NOTA + BUKTI TRANSFER KE WA
      * =========================================================================
      */
     function formatIndonesianOrderTimestamp(date = new Date()) {
@@ -1271,10 +1477,21 @@
         state.errors.address = '';
       }
 
+      if (!state.paymentProof.dataUrl) {
+        state.errors.proof = 'Wajib mengunggah foto/screenshot bukti transfer terlebih dahulu.';
+        isValid = false;
+      } else {
+        state.errors.proof = '';
+      }
+
       renderCartPanels();
 
       if (!isValid) {
-        showToast('Mohon lengkapi nama dan alamat pengantaran.', 'error');
+        if (!state.paymentProof.dataUrl && state.customer.name.trim() && state.customer.address.trim()) {
+          showToast('Mohon upload bukti transfer terlebih dahulu!', 'error');
+        } else {
+          showToast('Mohon lengkapi data pemesan & bukti transfer.', 'error');
+        }
       }
 
       return isValid;
@@ -1316,6 +1533,7 @@
         `*Pemesan:* ${nama}`,
         `*Alamat:* ${alamat}`,
         `*Pembayaran:* ${metodeBayar}`,
+        `*Status Bayar:* Sudah Transfer (Bukti Terlampir)`,
         thickLine,
         "*RINCIAN PESANAN*",
         "",
@@ -1327,88 +1545,41 @@
         "*Catatan:*",
         `_${catatanFormatted}_`,
         thickLine,
-        "Berikut saya lampirkan bukti pembayarannya ya kak. Mohon konfirmasi pesanan saya. Terima kasih!"
+        "Berikut saya kirimkan bukti transfernya ya kak. Mohon konfirmasi pesanan saya. Terima kasih!"
       ];
 
       return receiptLines.join("\n");
     }
 
-    function renderModalPaymentInstruction() {
-      const container = document.getElementById('modal-payment-instruction');
-      if (!container) return;
-
-      const { totalPrice } = getCartSummary();
-      const isQris = state.paymentMethod === 'qris';
+    function renderModalProofPreview() {
+      const container = document.getElementById('modal-proof-preview');
+      if (!container || !state.paymentProof.dataUrl) return;
 
       container.innerHTML = `
-        <div class="flex items-center justify-between gap-2 mb-2.5">
-          <span class="text-xs font-bold text-slate-800">Langkah 1: Selesaikan Pembayaran</span>
-          <div class="flex items-center gap-1 bg-white p-0.5 rounded-lg border border-sage-200">
-            <button
-              type="button"
-              onclick="selectPaymentMethod('qris')"
-              class="px-2 py-1 rounded-md text-[11px] font-bold transition ${isQris ? 'bg-sage-600 text-white' : 'text-slate-500 hover:text-slate-700'}"
-            >Barcode</button>
-            <button
-              type="button"
-              onclick="selectPaymentMethod('dana')"
-              class="px-2 py-1 rounded-md text-[11px] font-bold transition ${!isQris ? 'bg-sky-600 text-white' : 'text-slate-500 hover:text-slate-700'}"
-            >DANA</button>
-          </div>
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="text-xs font-bold text-sage-800 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-sage-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Bukti Transfer Terlampir</span>
+          </span>
+          <span class="text-[11px] font-semibold text-sage-700">${getPaymentMethodLabel()}</span>
         </div>
 
-        ${isQris ? `
-          <div class="flex items-center gap-3 bg-white rounded-xl p-2.5 border border-sage-200/80">
-            <img 
-              src="${STORE_CONFIG.payment.qrisImage}" 
-              alt="Barcode QRIS"
-              onclick="openQrisModal()"
-              onerror="handleImageError(this, '${STORE_CONFIG.payment.qrisFallbackImage}', 'Barcode QRIS')"
-              class="w-24 h-24 object-contain rounded-lg border border-cream-200 cursor-pointer shrink-0 bg-cream-50"
-            />
-            <div class="text-left flex-1 min-w-0">
-              <p class="text-[11px] text-slate-500">Nominal Pembayaran:</p>
-              <p class="font-display font-extrabold text-base text-sage-700 mb-1.5">${formatRupiah(totalPrice)}</p>
-              <div class="flex flex-wrap gap-1.5">
-                <button
-                  type="button"
-                  onclick="openQrisModal()"
-                  class="px-2.5 py-1 rounded-lg bg-sage-600 hover:bg-sage-700 text-white text-[11px] font-semibold transition"
-                >
-                  Perbesar QR
-                </button>
-                <a
-                  href="${STORE_CONFIG.payment.qrisDriveUrl}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-cream-200 text-slate-700 text-[11px] font-semibold transition"
-                >
-                  Link Barcode
-                </a>
-              </div>
-            </div>
+        <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-sage-200">
+          <img 
+            src="${state.paymentProof.dataUrl}" 
+            alt="Bukti Transfer" 
+            class="w-20 h-20 object-cover rounded-lg border border-cream-200 shrink-0"
+          />
+          <div class="flex-1 min-w-0 text-left">
+            <p class="text-xs font-bold text-slate-800 truncate">${escapeHtml(state.paymentProof.fileName)}</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">${state.paymentProof.fileSizeLabel}</p>
+            <p class="text-[11px] text-sage-700 font-medium mt-1 leading-snug">
+              Foto bukti TF akan ikut dikirimkan bersama nota pesanan ini.
+            </p>
           </div>
-        ` : `
-          <div class="bg-white rounded-xl p-3 border border-sky-200">
-            <div class="flex items-center justify-between gap-2">
-              <div>
-                <p class="text-[11px] text-slate-500">Transfer DANA ke nomor:</p>
-                <p class="font-mono font-bold text-base text-slate-800">${STORE_CONFIG.payment.danaNumber}</p>
-                <p class="text-xs font-bold text-sky-700 mt-0.5">Nominal: ${formatRupiah(totalPrice)}</p>
-              </div>
-              <button
-                type="button"
-                onclick="copyDanaNumber()"
-                class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition active:scale-95 shrink-0"
-              >
-                Salin Nomor
-              </button>
-            </div>
-          </div>
-        `}
-        <p class="text-[11px] text-slate-500 mt-2 leading-snug">
-          Langkah 2: Klik <strong>Kirim ke WhatsApp</strong> di bawah lalu lampirkan screenshot bukti pembayaran.
-        </p>
+        </div>
       `;
     }
 
@@ -1416,7 +1587,7 @@
       event.preventDefault();
       if (!validateOrder()) return;
 
-      renderModalPaymentInstruction();
+      renderModalProofPreview();
       const message = buildWhatsAppMessage();
       document.getElementById('wa-message-preview').textContent = message;
       
@@ -1432,8 +1603,33 @@
       copyTextToClipboard(buildWhatsAppMessage(), 'Struk pesanan berhasil disalin!');
     }
 
-    function proceedToWhatsApp() {
+    // Mengirim gambar bukti transfer + teks nota ke WhatsApp
+    async function sendOrderAndProofToWhatsApp() {
       const message = buildWhatsAppMessage();
+      const proofFile = state.paymentProof.file;
+
+      // 1. Jika di HP / browser yang mendukung Web Share API dengan file gambar:
+      //    Langsung membagikan file foto bukti TF + teks nota ke aplikasi WhatsApp!
+      if (proofFile && navigator.canShare && navigator.canShare({ files: [proofFile] })) {
+        try {
+          await navigator.share({
+            files: [proofFile],
+            title: 'Pesanan & Bukti Transfer - yukkk apresiasi diri',
+            text: message
+          });
+          closeConfirmModal();
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') {
+            return; // User membatalkan dialog share
+          }
+          // Jika gagal, lanjutkan ke fallback WhatsApp URL + salin gambar
+        }
+      }
+
+      // 2. Fallback untuk Desktop / Laptop:
+      //    Otomatis salin foto bukti transfer ke clipboard agar user tinggal Ctrl+V di WhatsApp, lalu buka chat WA penjual
+      await copyProofImageToClipboard();
       const encodedMessage = encodeURIComponent(message);
       const waUrl = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodedMessage}`;
       
@@ -1613,7 +1809,7 @@
 
     /**
      * =========================================================================
-     * 9. INISIALISASI APLIKASI SAAT HALAMAN DIMUAT
+     * 9. INISIALISASI APLIKASI
      * =========================================================================
      */
     window.addEventListener('DOMContentLoaded', () => {
